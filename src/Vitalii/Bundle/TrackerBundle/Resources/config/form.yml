@@ -1,0 +1,5 @@
+services:
+  tracker.form.type.issue:
+    class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueType
+    tags:
+      - { name: form.type, alias: tracker_issue }

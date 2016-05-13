@@ -1,0 +1,82 @@
+datagrid:
+  issues-grid:
+    source:
+      acl_resource: tracker.issue_view
+      type: orm
+      query:
+        select:
+          - i.id
+          - i.code
+          - i.summary
+          - i.status
+          - i.createdAt
+          - i.updatedAt
+        from:
+          - { table: VitaliiTrackerBundle:Issue, alias: i }
+    columns:
+      code:
+        label: Code
+      summary:
+        label: Summary
+      status:
+        label: Status
+      createdAt:
+        label: Created at
+        frontend_type: date
+      updatedAt:
+        label: Updated at
+        frontend_type: date
+    properties:
+      id: ~
+      update_link:
+        type: url
+        route: tracker.issue_update
+        params:
+          - id
+#      view_link:
+#        type: url
+#        route: tracker.issue_view
+#        params:
+#          - id
+#      delete_link:
+#        type: url
+#        route: tracker_api_delete_issue
+#        params:
+#          - id
+    sorters:
+      columns:
+        code:
+          data_name: i.code
+        status:
+          data_name: i.status
+        createdAt:
+          data_name: i.createdAt
+        updatedAt:
+          data_name: i.updatedAt
+      default:
+        updatedAt: DESC
+    filters:
+      columns:
+        status:
+          type: string
+          data_name: v.status
+    actions:
+      view:
+        type:          navigate
+        label:         View
+        link:          view_link
+        icon:          eye-open
+        acl_resource:  tracker.issue_view
+        rowAction:     true
+      update:
+        type:          navigate
+        label:         Update
+        link:          update_link
+        icon:          edit
+        acl_resource:  tracker.issue_update
+      delete:
+        type:          delete
+        label:         Delete
+        link:          delete_link
+        icon:          trash
+        acl_resource:  tracker.issue_delete

@@ -3,14 +3,19 @@
 namespace Vitalii\Bundle\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Vitalii\Bundle\TrackerBundle\Model\ExtendIssue;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tracker_issue")
  */
-class Issue extends ExtendIssue
+class Issue extends ExtendIssue implements DatesAwareInterface
 {
+    use DatesAwareTrait;
+
     /**
      * @var integer
      *
@@ -68,20 +73,6 @@ class Issue extends ExtendIssue
      * @ORM\Column(type="string", length=255)
      */
     private $status;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
 
     /**
      * Get id
@@ -259,53 +250,5 @@ class Issue extends ExtendIssue
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Issue
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Issue
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 }

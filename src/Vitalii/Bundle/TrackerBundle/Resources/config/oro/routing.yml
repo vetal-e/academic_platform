@@ -1,0 +1,4 @@
+tracker_bundle:
+  resource: "@VitaliiTrackerBundle/Controller"
+  type: annotation
+  prefix: /tracker
