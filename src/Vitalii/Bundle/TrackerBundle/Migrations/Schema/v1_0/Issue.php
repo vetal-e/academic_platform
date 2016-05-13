@@ -28,9 +28,7 @@ class Issue implements Migration, ExtendExtensionAwareInterface
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
-        $table->addColumn('priority', 'string', ['length' => 255]);
         $table->addColumn('resolution', 'string', ['length' => 255, 'notnull' => false]);
-        $table->addColumn('status', 'string', ['length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
 
@@ -44,9 +42,28 @@ class Issue implements Migration, ExtendExtensionAwareInterface
             ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
         );
 
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'priority',
+            'issue_priority',
+            false,
+            false,
+            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
+        );
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'issue_status',
+            false,
+            false,
+            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
+        );
+
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'issue_code_idx');
         $table->addIndex(['summary'], 'issue_summary_idx', []);
-        $table->addIndex(['status'], 'issue_status_idx', []);
     }
 }

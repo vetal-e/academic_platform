@@ -51,23 +51,9 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $priority;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $resolution;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $status;
 
     /**
      * Get id
@@ -152,30 +138,6 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     }
 
     /**
-     * Set priority
-     *
-     * @param string $priority
-     *
-     * @return Issue
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * Get priority
-     *
-     * @return string
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
      * Set resolution
      *
      * @param string $resolution
@@ -197,29 +159,5 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getResolution()
     {
         return $this->resolution;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return Issue
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 }
