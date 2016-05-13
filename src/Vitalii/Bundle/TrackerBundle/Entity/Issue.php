@@ -5,12 +5,14 @@ namespace Vitalii\Bundle\TrackerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Vitalii\Bundle\TrackerBundle\Model\ExtendIssue;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tracker_issue")
+ * @Config
  */
 class Issue extends ExtendIssue implements DatesAwareInterface
 {
@@ -45,13 +47,6 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
 
     /**
      * @var string
@@ -154,30 +149,6 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     *
-     * @return Issue
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
