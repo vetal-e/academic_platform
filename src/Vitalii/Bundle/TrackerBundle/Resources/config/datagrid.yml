@@ -33,11 +33,11 @@ datagrid:
         route: tracker.issue_update
         params:
           - id
-#      view_link:
-#        type: url
-#        route: tracker.issue_view
-#        params:
-#          - id
+      view_link:
+        type: url
+        route: tracker.issue_view
+        params:
+          - id
 #      delete_link:
 #        type: url
 #        route: tracker_api_delete_issue

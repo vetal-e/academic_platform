@@ -3,12 +3,12 @@
 {% set pageTitle = 'Issues'|trans %}
 
 {% block navButtons %}
-    {#{% if resource_granted('tracker.issue_view') %}#}
+    {% if resource_granted('tracker.issue_view') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path': path('tracker.issue_create'),
                 'entity_label': 'Issue'|trans
             }) }}
         </div>
-    {#{% endif %}#}
+    {% endif %}
 {% endblock %}

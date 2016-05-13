@@ -3,6 +3,7 @@
 namespace Vitalii\Bundle\TrackerBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,7 +19,7 @@ class IssueController extends Controller
      * @Route("/", name="tracker.issue_index")
      * @Template
      * @Acl(
-     *     id="tracker.issue_index",
+     *     id="tracker.issue_view",
      *     type="entity",
      *     class="VitaliiTrackerBundle:Issue",
      *     permission="VIEW"
@@ -57,6 +58,16 @@ class IssueController extends Controller
     public function updateAction(Issue $issue, Request $request)
     {
         return $this->update($issue, $request);
+    }
+
+    /**
+     * @Route("/{id}", name="tracker.issue_view", requirements={"id":"\d+"}, defaults={"id":0})
+     * @Template
+     * @AclAncestor("tracker.issue_view")
+     */
+    public function viewAction(Issue $issue)
+    {
+        return ['entity' => $issue];
     }
 
     private function update(Issue $issue, Request $request)
