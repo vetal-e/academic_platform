@@ -70,6 +70,22 @@ class IssueController extends Controller
         return ['entity' => $issue];
     }
 
+    /**
+     * @Route("/delete/{id}", name="tracker.issue_delete", requirements={"id":"\d+"})
+     * @Acl(
+     *     id="tracker.issue_delete",
+     *     type="entity",
+     *     class="VitaliiTrackerBundle:Issue",
+     *     permission="DELETE"
+     * )
+     */
+    public function deleteAction(Issue $issue)
+    {
+        $this->delete($issue);
+
+        return $this->redirectToRoute('tracker.issue_index');
+    }
+
     private function update(Issue $issue, Request $request)
     {
         $form = $this->get('form.factory')->create('tracker_issue', $issue);
@@ -94,5 +110,12 @@ class IssueController extends Controller
             'entity' => $issue,
             'form' => $form->createView(),
         );
+    }
+
+    private function delete($issue)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($issue);
+        $entityManager->flush();
     }
 }

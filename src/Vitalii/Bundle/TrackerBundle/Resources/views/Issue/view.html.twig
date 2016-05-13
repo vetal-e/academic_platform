@@ -9,16 +9,16 @@
         }) }}
     {% endif %}
 
-    {#{% if resource_granted('DELETE', entity) %}#}
-        {#{{ UI.deleteButton({#}
-            {#'dataUrl': path('tracker_api_delete_issue', {'id': entity.id}),#}
-            {#'dataRedirect': path('tracker.issue_index'),#}
-            {#'aCss': 'no-hash remove-button',#}
-            {#'id': 'btn-remove-issue',#}
-            {#'dataId': entity.id,#}
-            {#'entity_label': 'Issue'|trans,#}
-        {#}) }}#}
-    {#{% endif %}#}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('tracker.issue_delete', { id: entity.id}),
+            'dataRedirect': path('tracker.issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-issue',
+            'dataId': entity.id,
+            'entity_label': 'Issue'|trans,
+        }) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}

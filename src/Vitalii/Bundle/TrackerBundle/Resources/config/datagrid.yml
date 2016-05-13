@@ -38,11 +38,11 @@ datagrid:
         route: tracker.issue_view
         params:
           - id
-#      delete_link:
-#        type: url
-#        route: tracker_api_delete_issue
-#        params:
-#          - id
+      delete_link:
+        type: url
+        route: tracker.issue_delete
+        params:
+          - id
     sorters:
       columns:
         code:
