@@ -49,13 +49,6 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $resolution;
-
-    /**
      * Get id
      *
      * @return integer
@@ -135,29 +128,5 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set resolution
-     *
-     * @param string $resolution
-     *
-     * @return Issue
-     */
-    public function setResolution($resolution)
-    {
-        $this->resolution = $resolution;
-
-        return $this;
-    }
-
-    /**
-     * Get resolution
-     *
-     * @return string
-     */
-    public function getResolution()
-    {
-        return $this->resolution;
     }
 }

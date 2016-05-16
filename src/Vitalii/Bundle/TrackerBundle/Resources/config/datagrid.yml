@@ -1,5 +1,6 @@
 datagrid:
   issues-grid:
+    extended_entity_name: Vitalii\Bundle\TrackerBundle\Entity\Issue
     source:
       acl_resource: tracker.issue_view
       type: orm
@@ -8,18 +9,33 @@ datagrid:
           - i.id
           - i.code
           - i.summary
-          - i.status
           - i.createdAt
           - i.updatedAt
+          - type_enum.name as typeName
+          - priority_enum.name as priorityName
+          - status_enum.name as statusName
+          - resolution_enum.name as resolutionName
         from:
           - { table: VitaliiTrackerBundle:Issue, alias: i }
+        join:
+          left:
+            - { join: i.type, alias: type_enum }
+            - { join: i.priority, alias: priority_enum }
+            - { join: i.status, alias: status_enum }
+            - { join: i.resolution, alias: resolution_enum }
     columns:
       code:
         label: Code
       summary:
         label: Summary
-      status:
+      typeName:
+        label: Type
+      priorityName:
+        label: Priority
+      statusName:
         label: Status
+      resolutionName:
+        label: Resolution
       createdAt:
         label: Created at
         frontend_type: date
@@ -47,8 +63,14 @@ datagrid:
       columns:
         code:
           data_name: i.code
-        status:
-          data_name: i.status
+        typeName:
+          data_name: type_enum.priority
+        priorityName:
+          data_name: priority_enum.priority
+        statusName:
+          data_name: status_enum.priority
+        resolutionName:
+          data_name: resolution_enum.priority
         createdAt:
           data_name: i.createdAt
         updatedAt:
@@ -57,9 +79,22 @@ datagrid:
         updatedAt: DESC
     filters:
       columns:
-        status:
-          type: string
-          data_name: v.status
+        typeName:
+          type: enum
+          enum_code: issue_type
+          data_name: typeName
+        priorityName:
+          type: enum
+          enum_code: issue_priority
+          data_name: priorityName
+        statusName:
+          type: enum
+          enum_code: issue_status
+          data_name: statusName
+        resolutionName:
+          type: enum
+          enum_code: issue_resolution
+          data_name: resolutionName
     actions:
       view:
         type:          navigate

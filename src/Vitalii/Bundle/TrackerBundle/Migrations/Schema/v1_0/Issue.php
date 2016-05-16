@@ -28,7 +28,6 @@ class Issue implements Migration, ExtendExtensionAwareInterface
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
-        $table->addColumn('resolution', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
 
@@ -39,7 +38,12 @@ class Issue implements Migration, ExtendExtensionAwareInterface
             'issue_type',
             false,
             false,
-            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+                'datagrid' => [
+                    'is_visible' => false,
+                ],
+            ]
         );
 
         $this->extendExtension->addEnumField(
@@ -49,7 +53,12 @@ class Issue implements Migration, ExtendExtensionAwareInterface
             'issue_priority',
             false,
             false,
-            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+                'datagrid' => [
+                    'is_visible' => false,
+                ],
+            ]
         );
 
         $this->extendExtension->addEnumField(
@@ -59,7 +68,27 @@ class Issue implements Migration, ExtendExtensionAwareInterface
             'issue_status',
             false,
             false,
-            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+                'datagrid' => [
+                    'is_visible' => false,
+                ],
+            ]
+        );
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'resolution',
+            'issue_resolution',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+                'datagrid' => [
+                    'is_visible' => false,
+                ],
+            ]
         );
 
         $table->setPrimaryKey(['id']);

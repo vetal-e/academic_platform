@@ -7,15 +7,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
-class LoadIssueStatusData extends AbstractFixture
+class LoadIssueResolutionData extends AbstractFixture
 {
     /** @var array */
     protected $data = [
-        'Open' => true,
-        'In progress' => false,
-        'Resolved' => false,
-        'Closed' => false,
-        'Reopened' => false,
+        'Done' => false,
+        'Fixed' => false,
+        'Duplicate' => false,
+        'Incomplete' => false,
+        'Cannot reproduce' => false,
+        'Rejected' => false,
     ];
 
     /**
@@ -23,7 +24,7 @@ class LoadIssueStatusData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $className = ExtendHelper::buildEnumValueClassName('issue_status');
+        $className = ExtendHelper::buildEnumValueClassName('issue_resolution');
 
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);
