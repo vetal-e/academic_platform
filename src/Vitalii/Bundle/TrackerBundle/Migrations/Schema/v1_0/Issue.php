@@ -28,6 +28,8 @@ class Issue implements Migration, ExtendExtensionAwareInterface
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
+        $table->addColumn('assignee_id', 'integer', ['notnull' => false]);
+        $table->addColumn('reporter_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
 
@@ -94,5 +96,20 @@ class Issue implements Migration, ExtendExtensionAwareInterface
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'issue_code_idx');
         $table->addIndex(['summary'], 'issue_summary_idx', []);
+        $table->addIndex(['reporter_id'], 'issue_reporter_idx', []);
+        $table->addIndex(['assignee_id'], 'issue_assignee_idx', []);
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['assignee_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['reporter_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 }

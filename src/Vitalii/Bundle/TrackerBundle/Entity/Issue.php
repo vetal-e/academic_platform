@@ -49,6 +49,22 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     private $description;
 
     /**
+     * @var \Oro\Bundle\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $reporter;
+
+    /**
+     * @var \Oro\Bundle\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $assignee;
+
+    /**
      * Get id
      *
      * @return integer
@@ -128,5 +144,53 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set reporter
+     *
+     * @param \Oro\Bundle\UserBundle\Entity\User $reporter
+     *
+     * @return Issue
+     */
+    public function setReporter(\Oro\Bundle\UserBundle\Entity\User $reporter = null)
+    {
+        $this->reporter = $reporter;
+
+        return $this;
+    }
+
+    /**
+     * Get reporter
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\User
+     */
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Oro\Bundle\UserBundle\Entity\User $assignee
+     *
+     * @return Issue
+     */
+    public function setAssignee(\Oro\Bundle\UserBundle\Entity\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
     }
 }
