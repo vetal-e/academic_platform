@@ -1,0 +1,2 @@
+parameters:
+  vitalii_tracker.issue.entity.class: Vitalii\Bundle\TrackerBundle\Entity\Issue

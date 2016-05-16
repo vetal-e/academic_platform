@@ -1,6 +1,6 @@
 datagrid:
   issues-grid:
-    extended_entity_name: Vitalii\Bundle\TrackerBundle\Entity\Issue
+    extended_entity_name: %vitalii_tracker.issue.entity.class%
     source:
       acl_resource: tracker.issue_view
       type: orm
