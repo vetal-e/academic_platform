@@ -13,6 +13,9 @@ class IssueType extends AbstractType
         $builder
             ->add('code')
             ->add('summary')
+            ->add('assignee', null, [
+                'label' => 'Assignee',
+            ])
             ->add('status')
             ->add('type')
             ->add('priority')
