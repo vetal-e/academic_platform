@@ -42,7 +42,10 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Issue(), $request);
+        $issue = new Issue();
+        $issue->setReporter($this->getUser());
+
+        return $this->update($issue, $request);
     }
 
     /**

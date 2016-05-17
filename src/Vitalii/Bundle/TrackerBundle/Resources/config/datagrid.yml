@@ -15,6 +15,8 @@ datagrid:
           - priority_enum.name as priorityName
           - status_enum.name as statusName
           - resolution_enum.name as resolutionName
+          - assignee.username as assigneeUsername
+          - reporter.username as reporterUsername
         from:
           - { table: VitaliiTrackerBundle:Issue, alias: i }
         join:
@@ -23,6 +25,8 @@ datagrid:
             - { join: i.priority, alias: priority_enum }
             - { join: i.status, alias: status_enum }
             - { join: i.resolution, alias: resolution_enum }
+            - { join: i.assignee, alias: assignee }
+            - { join: i.reporter, alias: reporter }
     columns:
       code:
         label: Code
@@ -36,6 +40,10 @@ datagrid:
         label: Status
       resolutionName:
         label: Resolution
+      reporterUsername:
+        label: Reported by
+      assigneeUsername:
+        label: Assignee
       createdAt:
         label: Created at
         frontend_type: date
@@ -95,6 +103,12 @@ datagrid:
           type: enum
           enum_code: issue_resolution
           data_name: resolutionName
+        assigneeUsername:
+          type: entity
+          options:
+            field_options:
+              class: Oro\Bundle\UserBundle\Entity\User
+          data_name: assigneeUsername
     actions:
       view:
         type:          navigate
