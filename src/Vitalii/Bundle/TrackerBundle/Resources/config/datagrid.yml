@@ -2,7 +2,7 @@ datagrid:
   issues-grid:
     extended_entity_name: %vitalii_tracker.issue.entity.class%
     source:
-      acl_resource: tracker.issue_view
+      acl_resource: "tracker.issue_view"
       type: orm
       query:
         select:
@@ -115,17 +115,17 @@ datagrid:
         label:         View
         link:          view_link
         icon:          eye-open
-        acl_resource:  tracker.issue_view
+        acl_resource:  "tracker.issue_view"
         rowAction:     true
       update:
         type:          navigate
         label:         Update
         link:          update_link
         icon:          edit
-        acl_resource:  tracker.issue_update
+        acl_resource:  "tracker.issue_update"
       delete:
         type:          delete
         label:         Delete
         link:          delete_link
         icon:          trash
-        acl_resource:  tracker.issue_delete
+        acl_resource:  "tracker.issue_delete"

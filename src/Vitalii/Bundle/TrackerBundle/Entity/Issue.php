@@ -12,7 +12,20 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 /**
  * @ORM\Entity
  * @ORM\Table(name="tracker_issue")
- * @Config
+ * @Config(
+ *      defaultValues={
+ *          "ownership"={
+ *              "owner_type"="USER",
+ *              "owner_field_name"="assignee",
+ *              "owner_column_name"="assignee_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          },
+ *          "security"={
+ *              "type"="ACL"
+ *          }
+ *      }
+ * )
  */
 class Issue extends ExtendIssue implements DatesAwareInterface
 {
@@ -63,6 +76,14 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $assignee;
+
+    /**
+     * @var \Oro\Bundle\OrganizationBundle\Entity\Organization
+     *
+     * @ORM\ManyToOne(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $organization;
 
     /**
      * Get id
@@ -192,5 +213,29 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getAssignee()
     {
         return $this->assignee;
+    }
+
+    /**
+     * Set organization
+     *
+     * @param \Oro\Bundle\OrganizationBundle\Entity\Organization $organization
+     *
+     * @return Issue
+     */
+    public function setOrganization(\Oro\Bundle\OrganizationBundle\Entity\Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return \Oro\Bundle\OrganizationBundle\Entity\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 }
