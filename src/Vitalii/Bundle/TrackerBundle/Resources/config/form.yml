@@ -7,3 +7,7 @@ services:
     class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueSubtaskType
     tags:
       - { name: form.type, alias: tracker_issue_subtask }
+  tracker.form.type.issue_story:
+    class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueStoryType
+    tags:
+      - { name: form.type, alias: tracker_issue_story }

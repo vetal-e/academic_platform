@@ -61,6 +61,12 @@ class IssueController extends Controller
      */
     public function addSubtaskAction(Issue $parent, Request $request)
     {
+        $this->denyAccessUnlessGranted(
+            'subtask',
+            $parent,
+            'Subtasks can only be created in Story'
+        );
+
         $issue = new Issue();
         $issue->setReporter($this->getUser());
         $issue->setParentIssue($parent);
@@ -89,6 +95,9 @@ class IssueController extends Controller
         if (!empty($issue->getParentIssue())) {
             $formName = 'tracker_issue_subtask';
             $template = 'VitaliiTrackerBundle:Issue:update_subtask.html.twig';
+        } elseif (!$issue->getChildIssues()->isEmpty()) {
+            $formName = 'tracker_issue_story';
+            $template = 'VitaliiTrackerBundle:Issue:update_story.html.twig';
         }
 
         $data = $this->update($issue, $request, $formName);

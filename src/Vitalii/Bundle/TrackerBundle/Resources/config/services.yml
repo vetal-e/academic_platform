@@ -1,0 +1,6 @@
+services:
+  security.access.issue_voter:
+    class:      Vitalii\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter
+    public:     false
+    tags:
+      - { name: security.voter }
