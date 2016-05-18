@@ -2,6 +2,7 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Controller;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,8 +50,30 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/subtask/{id}", name="tracker.issue_subtask")
+     * @Template("VitaliiTrackerBundle:Issue:update_subtask.html.twig")
+     * @Acl(
+     *     id="tracker.issue_create",
+     *     type="entity",
+     *     class="VitaliiTrackerBundle:Issue",
+     *     permission="CREATE"
+     * )
+     */
+    public function addSubtaskAction(Issue $parent, Request $request)
+    {
+        $issue = new Issue();
+        $issue->setReporter($this->getUser());
+        $issue->setParentIssue($parent);
+        $typeFieldClassName = ExtendHelper::buildEnumValueClassName('issue_type');
+
+        $typeSubtask = $this->getDoctrine()->getRepository($typeFieldClassName)->find('subtask');
+        $issue->setType($typeSubtask);
+
+        return $this->update($issue, $request, 'tracker_issue_subtask');
+    }
+
+    /**
      * @Route("/update/{id}", name="tracker.issue_update", requirements={"id":"\d+"}, defaults={"id":0})
-     * @Template
      * @Acl(
      *     id="tracker.issue_update",
      *     type="entity",
@@ -60,7 +83,21 @@ class IssueController extends Controller
      */
     public function updateAction(Issue $issue, Request $request)
     {
-        return $this->update($issue, $request);
+        $formName = 'tracker_issue';
+        $template = 'VitaliiTrackerBundle:Issue:update.html.twig';
+
+        if (!empty($issue->getParentIssue())) {
+            $formName = 'tracker_issue_subtask';
+            $template = 'VitaliiTrackerBundle:Issue:update_subtask.html.twig';
+        }
+
+        $data = $this->update($issue, $request, $formName);
+
+        if (is_array($data)) {
+            return $this->render($template, $data);
+        } else {
+            return $data;
+        }
     }
 
     /**
@@ -89,9 +126,9 @@ class IssueController extends Controller
         return $this->redirectToRoute('tracker.issue_index');
     }
 
-    private function update(Issue $issue, Request $request)
+    private function update(Issue $issue, Request $request, $formName = 'tracker_issue')
     {
-        $form = $this->get('form.factory')->create('tracker_issue', $issue);
+        $form = $this->get('form.factory')->create($formName, $issue);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

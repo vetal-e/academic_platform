@@ -2,6 +2,7 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
@@ -78,12 +79,32 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     private $assignee;
 
     /**
+     * @var Issue
+     *
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="childIssues")
+     * @ORM\JoinColumn(name="parent_issue_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parentIssue;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="parentIssue")
+     */
+    protected $childIssues;
+
+    /**
      * @var \Oro\Bundle\OrganizationBundle\Entity\Organization
      *
      * @ORM\ManyToOne(targetEntity="\Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $organization;
+
+    public function __construct()
+    {
+        $this->childIssues = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -237,5 +258,61 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * Set parentIssue
+     *
+     * @param Issue $parentIssue
+     * @return Issue
+     */
+    public function setParentIssue(Issue $parentIssue = null)
+    {
+        $this->parentIssue = $parentIssue;
+
+        return $this;
+    }
+
+    /**
+     * Get parentIssue
+     *
+     * @return Issue
+     */
+    public function getParentIssue()
+    {
+        return $this->parentIssue;
+    }
+
+    /**
+     * Add childIssue
+     *
+     * @param Issue $childIssue
+     * @return Issue
+     */
+    public function addChildIssue(Issue $childIssue)
+    {
+        $this->childIssues[] = $childIssue;
+
+        return $this;
+    }
+
+    /**
+     * Remove childIssue
+     *
+     * @param Issue $childIssue
+     */
+    public function removeChildIssue(Issue $childIssue)
+    {
+        $this->childIssues->removeElement($childIssue);
+    }
+
+    /**
+     * Get childIssues
+     *
+     * @return ArrayCollection
+     */
+    public function getChildIssues()
+    {
+        return $this->childIssues;
     }
 }
