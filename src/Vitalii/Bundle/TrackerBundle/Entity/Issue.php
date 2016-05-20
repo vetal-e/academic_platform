@@ -27,6 +27,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          },
  *          "workflow"={
  *              "active_workflow"="issue_status"
+ *          },
+ *          "tag"={
+ *              "enabled"=true
  *          }
  *      }
  * )
@@ -107,6 +110,11 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function __construct()
     {
         $this->childIssues = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getCode();
     }
 
     /**
