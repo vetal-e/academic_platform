@@ -8,17 +8,32 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
-class Issue implements Migration, ExtendExtensionAwareInterface
+class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
      */
     protected $extendExtension;
 
+    /**
+     * @var NoteExtension
+     */
+    protected $noteExtension;
+
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 
     public function up(Schema $schema, QueryBag $queries)
@@ -112,5 +127,7 @@ class Issue implements Migration, ExtendExtensionAwareInterface
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
+
+        $this->noteExtension->addNoteAssociation($schema, $table->getName());
     }
 }
