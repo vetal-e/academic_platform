@@ -75,5 +75,11 @@ workflows:
             start_progress_definition: []
             resolve_definition: []
             close_definition: []
-            reopen_definition: []
+            reopen_definition:
+                post_actions:
+                    - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters:
+                            [null]
             stop_progress_definition: []
