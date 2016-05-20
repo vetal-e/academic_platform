@@ -16,7 +16,6 @@ class IssueSubtaskType extends AbstractType
             ->add('assignee', null, [
                 'label' => 'Assignee',
             ])
-            ->add('status')
             ->add('priority')
         ;
     }

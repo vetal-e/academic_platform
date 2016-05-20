@@ -13,7 +13,6 @@ datagrid:
           - i.updatedAt
           - type_enum.name as typeName
           - priority_enum.name as priorityName
-          - status_enum.name as statusName
           - resolution_enum.name as resolutionName
           - assignee.username as assigneeUsername
           - reporter.username as reporterUsername
@@ -23,7 +22,6 @@ datagrid:
           left:
             - { join: i.type, alias: type_enum }
             - { join: i.priority, alias: priority_enum }
-            - { join: i.status, alias: status_enum }
             - { join: i.resolution, alias: resolution_enum }
             - { join: i.assignee, alias: assignee }
             - { join: i.reporter, alias: reporter }
@@ -36,8 +34,6 @@ datagrid:
         label: Type
       priorityName:
         label: Priority
-      statusName:
-        label: Status
       resolutionName:
         label: Resolution
       reporterUsername:
@@ -75,8 +71,6 @@ datagrid:
           data_name: type_enum.priority
         priorityName:
           data_name: priority_enum.priority
-        statusName:
-          data_name: status_enum.priority
         resolutionName:
           data_name: resolution_enum.priority
         createdAt:
@@ -95,10 +89,6 @@ datagrid:
           type: enum
           enum_code: issue_priority
           data_name: priorityName
-        statusName:
-          type: enum
-          enum_code: issue_status
-          data_name: statusName
         resolutionName:
           type: enum
           enum_code: issue_resolution

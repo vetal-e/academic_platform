@@ -1,0 +1,112 @@
+workflows:
+    issue_status:
+        label: 'Issue Workflow'
+        entity: Vitalii\Bundle\TrackerBundle\Entity\Issue
+        entity_attribute: issue
+        start_step: open
+        steps_display_ordered: true
+
+        steps:
+            open:
+                label: 'Open'
+                order: 10
+                allowed_transitions:
+                    - start_progress
+                    - resolve
+                    - close
+            in_progress:
+                label: 'In progress'
+                order: 20
+                allowed_transitions:
+                   - stop_progress
+                   - resolve
+                   - close
+            closed:
+                label: 'Closed'
+                order: 30
+                allowed_transitions:
+                   - reopen
+            resolved:
+                label: 'Resolved'
+                order: 40
+                allowed_transitions:
+                   - close
+                   - reopen
+            reopened:
+                label: 'Reopened'
+                order: 50
+                allowed_transitions:
+                   - start_progress
+
+#        attributes:                                           # list of all existing attributes in workflow
+#            first_name:                                       # first name of a user
+#                property_path: user.firstName                 # path to entity property (automatically defined attribute metadata)
+#            middle_name:                                      # middle name of a user
+#                property_path: user.middleName                # path to entity property (automatically defined attribute metadata)
+#            last_name:                                        # last name of a user
+#                property_path: user.lastName                  # path to entity property (automatically defined attribute metadata)
+#            email_string:                                     # email string temporary attribute
+#                label: 'Email'                                # attribute label
+#                type: string                                  # attribute type
+#            email_entity:                                     # email entity temporary attribute
+#                label: 'Email Entity'                         # attribute label
+#                type: entity                                  # attribute type
+#                options:                                      # attribute options
+#                    class: Oro\Bundle\UserBundle\Entity\Email # entity class name
+
+        transitions:
+            start_progress:
+                label: 'Start progress'
+                step_to: in_progress
+                transition_definition: start_progress_definition
+#                form_options:                               # options which will be passed to form type of transition
+#                    attribute_fields:                       # list of attribute fields which will be shown
+#                        first_name:                         # attribute name
+#                            options:                        # list of form field options
+#                                required: true              # define this field as required
+#                                constraints:                # list of constraints
+#                                    - NotBlank: ~           # this field must be filled
+#                        middle_name: ~                      # attribute name
+#                        last_name:                          # attribute name
+#                            options:                        # list of form field options
+#                                required: true              # define this field as required
+#                                constraints:                # list of constraints
+#                                    - NotBlank: ~           # this field must be filled
+            resolve:
+                label: 'Resolve'
+                step_to: resolved
+                transition_definition: resolve_definition
+            close:
+                label: 'Close'
+                step_to: closed
+                transition_definition: close_definition
+            reopen:
+                label: 'Reopen'
+                step_to: reopened
+                transition_definition: reopen_definition
+            stop_progress:
+                label: 'Stop progrss'
+                step_to: open
+                transition_definition: stop_progress_definition
+
+        transition_definitions:
+            start_progress_definition: []
+            resolve_definition: []
+            close_definition: []
+            reopen_definition: []
+            stop_progress_definition: []
+#            add_email_definition:                                 # definition for transition "add_email"
+#                post_actions:                                     # list of action which will be performed after transition
+#                    - @create_entity:                             # create email entity
+#                        class: Oro\Bundle\UserBundle\Entity\Email # entity class
+#                        attribute: $email_entity                  # entity attribute that should store this entity
+#                        data:                                     # data for creating entity
+#                            email: $email_string                  # entered email
+#                            user: $user                           # current user
+#                    - @call_method:                               # call specific method from entity class
+#                        object: $user                             # object that should call method
+#                        method: addEmail                          # method that should be called
+#                        method_parameters:                        # parameters that will be passed to the called method
+#                            [$email_entity]                       # add email from temporary attribute
+#                    - @unset_value:                               # unset temporary properties
+#                            [$email_string, $email_entity]        # clear email string and entity

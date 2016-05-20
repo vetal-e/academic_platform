@@ -16,7 +16,6 @@ class IssueType extends AbstractType
             ->add('assignee', null, [
                 'label' => 'Assignee',
             ])
-            ->add('status')
             ->add('type')
             ->add('priority')
         ;

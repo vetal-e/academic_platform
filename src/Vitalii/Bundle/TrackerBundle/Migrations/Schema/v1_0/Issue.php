@@ -68,21 +68,6 @@ class Issue implements Migration, ExtendExtensionAwareInterface
         $this->extendExtension->addEnumField(
             $schema,
             $table,
-            'status',
-            'issue_status',
-            false,
-            false,
-            [
-                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
-                'datagrid' => [
-                    'is_visible' => false,
-                ],
-            ]
-        );
-
-        $this->extendExtension->addEnumField(
-            $schema,
-            $table,
             'resolution',
             'issue_resolution',
             false,

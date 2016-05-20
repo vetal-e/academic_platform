@@ -24,6 +24,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          },
  *          "security"={
  *              "type"="ACL"
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="issue_status"
  *          }
  *      }
  * )
