@@ -1,0 +1,19 @@
+definitions:
+    issue_collaborators_definition:
+        label: 'Issue Collaborators Definition'
+        enabled: true
+        entity: Vitalii\Bundle\TrackerBundle\Entity\Issue
+        order: 20
+        exclude_definitions: [issue_collaborators_definition]
+        actions_configuration:
+            - @call_service_method:
+                service: "tracker.issue.manager"
+                method: "addCollaboratorsFromIssue"
+                method_parameters: [$.data]
+triggers:
+    issue_collaborators_definition:
+        -
+            event: create
+        -
+            event: update
+            field: assignee

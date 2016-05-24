@@ -62,6 +62,12 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
                 'datagrid' => [
                     'is_visible' => false,
                 ],
+                'form' => [
+                    'is_enabled' => false,
+                ],
+                'view' => [
+                    'is_displayable' => false,
+                ],
             ]
         );
 
@@ -77,6 +83,9 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
                 'datagrid' => [
                     'is_visible' => false,
                 ],
+                'view' => [
+                    'is_displayable' => false,
+                ],
             ]
         );
 
@@ -91,6 +100,12 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
                 'datagrid' => [
                     'is_visible' => false,
+                ],
+                'form' => [
+                    'is_enabled' => false,
+                ],
+                'view' => [
+                    'is_displayable' => false,
                 ],
             ]
         );
@@ -129,5 +144,16 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
         );
 
         $this->noteExtension->addNoteAssociation($schema, $table->getName());
+
+        $this->extendExtension->addManyToManyRelation(
+            $schema,
+            'tracker_issue', // owning side table
+            'collaborators', // owning side field name
+            'oro_user', // target side table
+            ['username'], // column names are used to show a title of related entity
+            ['username'], // column names are used to show detailed info about related entity
+            ['username'], // Column names are used to show related entity in a grid
+            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM, 'without_default' => true]]
+        );
     }
 }

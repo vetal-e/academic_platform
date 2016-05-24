@@ -120,6 +120,18 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/widget/info/{id}", name="tracker.issue_widget_info", requirements={"id"="\d+"})
+     * @Template
+     * @AclAncestor("tracker.issue_view")
+     */
+    public function infoAction(Issue $entity)
+    {
+        return [
+            'entity' => $entity,
+        ];
+    }
+
+    /**
      * @Route("/delete/{id}", name="tracker.issue_delete", requirements={"id":"\d+"})
      * @Acl(
      *     id="tracker.issue_delete",

@@ -45,10 +45,19 @@
                     {{ UI.renderProperty('Assignee'|trans, entity.assignee) }}
                     {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('Updated at'|trans, entity.updatedAt|date) }}
+                    {{ UI.renderProperty('Description'|trans, entity.description) }}
                 </div>
             </div>
         </div>
     {% endset %}
+
+    {% set issueInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('tracker.issue_widget_info', {id: entity.id})
+        }) }}
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'Data'|trans,
@@ -58,6 +67,16 @@
             ]
         }
     ] %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title': 'Dynamic fields'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [issueInformationWidget] }
+            ]
+        }
+    ]) %}
 
     {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}

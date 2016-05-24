@@ -13,6 +13,7 @@ class IssueSubtaskType extends AbstractType
         $builder
             ->add('code')
             ->add('summary')
+            ->add('description')
             ->add('assignee', null, [
                 'label' => 'Assignee',
             ])
