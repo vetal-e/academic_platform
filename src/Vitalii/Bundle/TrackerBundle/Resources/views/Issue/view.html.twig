@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}
@@ -58,6 +59,25 @@
         }) }}
     {% endset %}
 
+    {% if collaboratorsGrid is defined %}
+        {% if gridScope is defined %}
+            {% set collaboratorsGrid = oro_datagrid_build_fullname(collaboratorsGrid, gridScope) %}
+        {% endif %}
+        {% set renderParams = {
+            'enableFullScreenLayout': true,
+            'enableViews': true,
+            'showViewsInNavbar': true,
+        }
+        |merge(renderParams|default({})) %}
+
+        {# Only grids on index pages will be tagged #}
+        <script type="text/javascript">
+            require(['oronavigation/js/content/grid-builder'], function (GridTagBuilder) {
+                GridTagBuilder.allowTracking({{ collaboratorsGrid|json_encode|raw }});
+            });
+        </script>
+    {% endif %}
+
     {% set dataBlocks = [
         {
             'title': 'Data'|trans,
@@ -71,9 +91,17 @@
     {% set dataBlocks = dataBlocks|merge([
         {
             'title': 'Dynamic fields'|trans,
-            'class': 'active',
             'subblocks': [
                 { 'data' : [issueInformationWidget] }
+            ]
+        }
+    ]) %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title': 'Collaborators'|trans,
+            'subblocks': [
+                { 'data' : [dataGrid.renderGrid(collaboratorsGrid, {issueId: entity.id}|default({}), renderParams)] }
             ]
         }
     ]) %}

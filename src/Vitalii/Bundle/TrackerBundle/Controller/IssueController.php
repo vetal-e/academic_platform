@@ -116,7 +116,10 @@ class IssueController extends Controller
      */
     public function viewAction(Issue $issue)
     {
-        return ['entity' => $issue];
+        return [
+            'entity' => $issue,
+            'collaboratorsGrid' => 'issue-collaborators-grid'
+        ];
     }
 
     /**

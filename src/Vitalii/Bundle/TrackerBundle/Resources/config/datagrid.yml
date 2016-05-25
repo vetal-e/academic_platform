@@ -1,121 +1,263 @@
 datagrid:
-  issues-grid:
-    extended_entity_name: %vitalii_tracker.issue.entity.class%
-    source:
-      acl_resource: "tracker.issue_view"
-      type: orm
-      query:
-        select:
-          - i.id
-          - i.code
-          - i.summary
-          - i.createdAt
-          - i.updatedAt
-          - type_enum.name as typeName
-          - priority_enum.name as priorityName
-          - resolution_enum.name as resolutionName
-          - assignee.username as assigneeUsername
-          - reporter.username as reporterUsername
-        from:
-          - { table: VitaliiTrackerBundle:Issue, alias: i }
-        join:
-          left:
-            - { join: i.type, alias: type_enum }
-            - { join: i.priority, alias: priority_enum }
-            - { join: i.resolution, alias: resolution_enum }
-            - { join: i.assignee, alias: assignee }
-            - { join: i.reporter, alias: reporter }
-    columns:
-      code:
-        label: Code
-      summary:
-        label: Summary
-      typeName:
-        label: Type
-      priorityName:
-        label: Priority
-      resolutionName:
-        label: Resolution
-      reporterUsername:
-        label: Reported by
-      assigneeUsername:
-        label: Assignee
-      createdAt:
-        label: Created at
-        frontend_type: date
-      updatedAt:
-        label: Updated at
-        frontend_type: date
-    properties:
-      id: ~
-      update_link:
-        type: url
-        route: tracker.issue_update
-        params:
-          - id
-      view_link:
-        type: url
-        route: tracker.issue_view
-        params:
-          - id
-      delete_link:
-        type: url
-        route: tracker.issue_delete
-        params:
-          - id
-    sorters:
-      columns:
-        code:
-          data_name: i.code
-        typeName:
-          data_name: type_enum.priority
-        priorityName:
-          data_name: priority_enum.priority
-        resolutionName:
-          data_name: resolution_enum.priority
-        createdAt:
-          data_name: i.createdAt
-        updatedAt:
-          data_name: i.updatedAt
-      default:
-        updatedAt: DESC
-    filters:
-      columns:
-        typeName:
-          type: enum
-          enum_code: issue_type
-          data_name: typeName
-        priorityName:
-          type: enum
-          enum_code: issue_priority
-          data_name: priorityName
-        resolutionName:
-          type: enum
-          enum_code: issue_resolution
-          data_name: resolutionName
-        assigneeUsername:
-          type: entity
-          options:
-            field_options:
-              class: Oro\Bundle\UserBundle\Entity\User
-          data_name: assigneeUsername
-    actions:
-      view:
-        type:          navigate
-        label:         View
-        link:          view_link
-        icon:          eye-open
-        acl_resource:  "tracker.issue_view"
-        rowAction:     true
-      update:
-        type:          navigate
-        label:         Update
-        link:          update_link
-        icon:          edit
-        acl_resource:  "tracker.issue_update"
-      delete:
-        type:          delete
-        label:         Delete
-        link:          delete_link
-        icon:          trash
-        acl_resource:  "tracker.issue_delete"
+    issues-grid:
+        extended_entity_name: %vitalii_tracker.issue.entity.class%
+        source:
+            acl_resource: "tracker.issue_view"
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.code
+                    - i.summary
+                    - i.createdAt
+                    - i.updatedAt
+                    - type_enum.name as typeName
+                    - priority_enum.name as priorityName
+                    - resolution_enum.name as resolutionName
+                    - assignee.username as assigneeUsername
+                    - reporter.username as reporterUsername
+                from:
+                    - { table: VitaliiTrackerBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.type, alias: type_enum }
+                        - { join: i.priority, alias: priority_enum }
+                        - { join: i.resolution, alias: resolution_enum }
+                        - { join: i.assignee, alias: assignee }
+                        - { join: i.reporter, alias: reporter }
+        columns:
+            code:
+                label: Code
+            summary:
+                label: Summary
+            typeName:
+                label: Type
+            priorityName:
+                label: Priority
+            resolutionName:
+                label: Resolution
+            reporterUsername:
+                label: Reported by
+            assigneeUsername:
+                label: Assignee
+            createdAt:
+                label: Created at
+                frontend_type: date
+            updatedAt:
+                  label: Updated at
+                  frontend_type: date
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: tracker.issue_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: tracker.issue_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: tracker.issue_delete
+                params:
+                    - id
+        sorters:
+            columns:
+                code:
+                    data_name: i.code
+                typeName:
+                    data_name: type_enum.priority
+                priorityName:
+                    data_name: priority_enum.priority
+                resolutionName:
+                    data_name: resolution_enum.priority
+                createdAt:
+                    data_name: i.createdAt
+                updatedAt:
+                    data_name: i.updatedAt
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                typeName:
+                    type: enum
+                    enum_code: issue_type
+                    data_name: typeName
+                priorityName:
+                    type: enum
+                    enum_code: issue_priority
+                    data_name: priorityName
+                resolutionName:
+                    type: enum
+                    enum_code: issue_resolution
+                    data_name: resolutionName
+                assigneeUsername:
+                    type: entity
+                    options:
+                        field_options:
+                            class: Oro\Bundle\UserBundle\Entity\User
+                    data_name: assigneeUsername
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  "tracker.issue_view"
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  "tracker.issue_update"
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  "tracker.issue_delete"
+    issue-collaborators-grid:
+        extended_entity_name: %oro_user.entity.class%
+        options:
+            entityHint: user
+            entity_pagination: true
+        acl_resource: oro_user_user_view
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.createdAt
+                    - u.updatedAt
+                    - u.enabled
+                from:
+                    - { table: VitaliiTrackerBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.collaborators, alias: u }
+                where:
+                    and:
+                        - i.id = :issueId
+            bind_parameters:
+                - issueId
+
+        inline_editing:
+            enable: true
+        columns:
+            firstName:
+                label:         oro.user.first_name.label
+            lastName:
+                label:         oro.user.last_name.label
+            email:
+                label:         oro.user.email.label
+            username:
+                label:         oro.user.username.label
+            enabled:
+                label:         oro.user.enabled.label
+                frontend_type: select
+                inline_editing:
+                    editor:
+                        view_options:
+                            key_type: 'boolean'
+                choices:
+                   - Inactive
+                   - Active
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_user_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_user
+                params:
+                    - id
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                createdAt:
+                    data_name: u.createdAt
+                updatedAt:
+                    data_name: u.updatedAt
+                enabled:
+                    data_name: u.enabled
+            default:
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                email:
+                    type: string
+                    data_name: u.email
+                username:
+                    type: string
+                    data_name: u.username
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                'false': Inactive
+                                'true':  Active
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: u.updatedAt
+
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  oro_user_user_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         oro.grid.action.update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_user_update
+            delete:
+                type:          delete
+                label:         oro.grid.action.delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  oro_user_user_delete

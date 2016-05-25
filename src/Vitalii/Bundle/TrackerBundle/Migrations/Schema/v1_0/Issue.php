@@ -153,7 +153,12 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
             ['username'], // column names are used to show a title of related entity
             ['username'], // column names are used to show detailed info about related entity
             ['username'], // Column names are used to show related entity in a grid
-            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM, 'without_default' => true]]
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM, 'without_default' => true],
+                'view' => [
+                    'is_displayable' => false,
+                ],
+            ]
         );
     }
 }
