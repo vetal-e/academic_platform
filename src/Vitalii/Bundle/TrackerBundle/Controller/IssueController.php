@@ -75,7 +75,15 @@ class IssueController extends Controller
         $typeSubtask = $this->getDoctrine()->getRepository($typeFieldClassName)->find('subtask');
         $issue->setType($typeSubtask);
 
-        return $this->update($issue, $request, 'tracker_issue_subtask');
+        return $this->update(
+            $issue,
+            $request,
+            'tracker_issue_subtask',
+            [
+                'route' => 'tracker.issue_view',
+                'parameters' => array('id' => $parent->getId()),
+            ]
+        );
     }
 
     /**
@@ -150,10 +158,16 @@ class IssueController extends Controller
         return $this->redirectToRoute('tracker.issue_index');
     }
 
-    private function update(Issue $issue, Request $request, $formName = 'tracker_issue')
+    private function update(Issue $issue, Request $request, $formName = 'tracker_issue', $redirectRoute = [])
     {
         $form = $this->get('form.factory')->create($formName, $issue);
         $form->handleRequest($request);
+
+        if (empty($redirectRoute)) {
+            $redirectRoute = [
+                'route' => 'tracker.issue_index'
+            ];
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -161,11 +175,11 @@ class IssueController extends Controller
             $entityManager->flush();
 
             return $this->get('oro_ui.router')->redirectAfterSave(
-                array(
+                [
                     'route' => 'tracker.issue_update',
                     'parameters' => array('id' => $issue->getId()),
-                ),
-                array('route' => 'tracker.issue_index'),
+                ],
+                $redirectRoute,
                 $issue
             );
         }
