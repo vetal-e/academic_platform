@@ -10,6 +10,17 @@ definitions:
                 service: "tracker.issue.manager"
                 method: "addCollaboratorsFromIssue"
                 method_parameters: [$.data]
+    issue_note_collaborators_definition:
+        label: 'Issue Note Collaborators Definition'
+        enabled: true
+        entity: Oro\Bundle\NoteBundle\Entity\Note
+        order: 30
+        exclude_definitions: [issue_note_collaborators_definition]
+        actions_configuration:
+            - @call_service_method:
+                service: "tracker.issue.manager"
+                method: "addCollaboratorsFromNote"
+                method_parameters: [$.data]
 triggers:
     issue_collaborators_definition:
         -
@@ -17,3 +28,8 @@ triggers:
         -
             event: update
             field: assignee
+    issue_note_collaborators_definition:
+        -
+            event: create
+        -
+            event: update

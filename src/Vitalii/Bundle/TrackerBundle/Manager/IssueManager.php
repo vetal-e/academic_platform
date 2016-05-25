@@ -3,15 +3,19 @@
 namespace Vitalii\Bundle\TrackerBundle\Manager;
 
 use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\NoteBundle\Entity\Note;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 
 class IssueManager
 {
     private $doctrine;
+    private $token;
 
-    public function __construct(Registry $doctrine)
+    public function __construct(Registry $doctrine, TokenStorage $tokenStorage)
     {
         $this->doctrine = $doctrine;
+        $this->token = $tokenStorage->getToken();
     }
 
     public function addCollaboratorsFromIssue(Issue $issue)
@@ -23,6 +27,15 @@ class IssueManager
         foreach ($collaborators as $collaborator) {
             $issue->addCollaborators($collaborator);
         }
+
+        $this->doctrine->getManager()->flush();
+    }
+
+    public function addCollaboratorsFromNote(Note $note)
+    {
+        $issue = $note->getTarget();
+
+        $issue->addCollaborators($this->token->getUser());
 
         $this->doctrine->getManager()->flush();
     }

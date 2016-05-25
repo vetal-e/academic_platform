@@ -6,4 +6,4 @@ services:
             - { name: security.voter }
     tracker.issue.manager:
         class:      Vitalii\Bundle\TrackerBundle\Manager\IssueManager
-        arguments:  ["@doctrine"]
+        arguments:  ["@doctrine", "@security.token_storage"]
