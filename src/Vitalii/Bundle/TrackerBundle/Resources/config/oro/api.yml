@@ -1,0 +1,10 @@
+oro_api:
+    entities:
+        Vitalii\Bundle\TrackerBundle\Entity\Issue:
+            exclusion_policy:     none # One of "all"; "none".
+            order_by:
+                created_at:           DESC
+            max_results:          -1
+            label:                Issue
+            plural_label:         Issues
+            description:          Issues to be managed by the tracker
