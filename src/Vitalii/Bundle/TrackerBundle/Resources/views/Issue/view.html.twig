@@ -78,6 +78,18 @@
         </script>
     {% endif %}
 
+    {% if subtasksGrid is defined %}
+        {% if gridScope is defined %}
+            {% set subtasksGrid = oro_datagrid_build_fullname(subtasksGrid, gridScope) %}
+        {% endif %}
+        {% set renderParams = {
+            'enableFullScreenLayout': true,
+            'enableViews': true,
+            'showViewsInNavbar': true,
+        }
+        |merge(renderParams|default({})) %}
+    {% endif %}
+
     {% set dataBlocks = [
         {
             'title': 'Data'|trans,
@@ -97,11 +109,22 @@
         }
     ]) %}
 
+    {% if entity.childIssues is not empty %}
+        {% set dataBlocks = dataBlocks|merge([
+            {
+                'title': 'Subtasks'|trans,
+                'subblocks': [
+                    { 'data' : [dataGrid.renderGrid(subtasksGrid, {issueId: entity.id}, renderParams)] }
+                ]
+            }
+        ]) %}
+    {% endif %}
+
     {% set dataBlocks = dataBlocks|merge([
         {
             'title': 'Collaborators'|trans,
             'subblocks': [
-                { 'data' : [dataGrid.renderGrid(collaboratorsGrid, {issueId: entity.id}|default({}), renderParams)] }
+                { 'data' : [dataGrid.renderGrid(collaboratorsGrid, {issueId: entity.id}, renderParams)] }
             ]
         }
     ]) %}

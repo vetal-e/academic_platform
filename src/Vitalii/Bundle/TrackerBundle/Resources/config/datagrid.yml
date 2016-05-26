@@ -119,6 +119,7 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  "tracker.issue_delete"
+
     issue-collaborators-grid:
         extended_entity_name: %oro_user.entity.class%
         options:
@@ -261,3 +262,16 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  oro_user_user_delete
+
+    issue-subtasks-grid:
+        extends: issues-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: i.parentIssue, alias: parent }
+                where:
+                    and:
+                        - parent.id = :issueId
+            bind_parameters:
+                - issueId

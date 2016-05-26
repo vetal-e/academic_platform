@@ -126,7 +126,8 @@ class IssueController extends Controller
     {
         return [
             'entity' => $issue,
-            'collaboratorsGrid' => 'issue-collaborators-grid'
+            'collaboratorsGrid' => 'issue-collaborators-grid',
+            'subtasksGrid' => 'issue-subtasks-grid',
         ];
     }
 
