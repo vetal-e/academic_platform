@@ -1,0 +1,21 @@
+Issues: Issues
+oro.ui.create_entity: "Create entity"
+
+vitalii:
+    tracker:
+        issue:
+            entity_label: Issue
+            assignee.label: Assignee
+            child_issues.label: "Child issues"
+            code.label: Code
+            collaborators.label: Collaborators
+            description.label: Description
+            id.label: Id
+            organization.label: Organization
+            parent_issue.label: "Parent issue"
+            priority.label: Priority
+            reporter.label: Reporter
+            resolution.label: Resolution
+            summary.label: Summary
+            type.label: Type
+
