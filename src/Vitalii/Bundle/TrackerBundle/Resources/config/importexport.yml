@@ -1,0 +1,10 @@
+services:
+    vitalii_tracker_issue.importexport.data_converter:
+        parent: oro_importexport.data_converter.configurable
+
+    vitalii_tracker_issue.importexport.processor.export:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter,  ['@vitalii_tracker_issue.importexport.data_converter']]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: %vitalii_tracker.issue.entity.class%, alias: vitalii_tracker_issue }

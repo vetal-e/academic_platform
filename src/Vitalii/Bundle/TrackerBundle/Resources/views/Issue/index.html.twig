@@ -3,6 +3,11 @@
 {% set pageTitle = 'Issues'|trans %}
 
 {% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        exportProcessor: 'vitalii_tracker_issue',
+        dataGridName: 'issues-grid'
+    } %}
+
     {% if resource_granted('tracker.issue_view') %}
         <div class="btn-group">
             {{ UI.addButton({

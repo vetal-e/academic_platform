@@ -18,5 +18,6 @@ class VitaliiTrackerExtension extends Extension
         $loader->load('services.yml');
         $loader->load('parameters.yml');
         $loader->load('form.yml');
+        $loader->load('importexport.yml');
     }
 }

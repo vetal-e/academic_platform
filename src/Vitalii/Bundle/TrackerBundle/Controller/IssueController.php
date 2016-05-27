@@ -28,7 +28,9 @@ class IssueController extends Controller
      */
     public function indexAction()
     {
-        return array('gridName' => 'issues-grid');
+        return [
+            'gridName' => 'issues-grid',
+        ];
     }
 
     /**
