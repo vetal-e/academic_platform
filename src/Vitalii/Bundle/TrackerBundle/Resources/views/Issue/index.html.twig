@@ -4,7 +4,10 @@
 
 {% block navButtons %}
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
         exportProcessor: 'vitalii_tracker_issue',
+        exportTemplateProcessor: 'vitalii_tracker_issue',
+        importProcessor: 'vitalii_tracker_issue.add_or_replace',
         dataGridName: 'issues-grid'
     } %}
 

@@ -30,6 +30,7 @@ class IssueController extends Controller
     {
         return [
             'gridName' => 'issues-grid',
+            'entity_class' => $this->container->getParameter('vitalii_tracker.issue.entity.class')
         ];
     }
 
