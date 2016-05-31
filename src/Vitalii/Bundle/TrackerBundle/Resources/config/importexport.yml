@@ -20,6 +20,7 @@ services:
         parent: oro_importexport.strategy.configurable_add_or_replace
         calls:
             - [setIssueImportHelper, ['@vitalii_tracker_issue.importexport.helper.issue_import_helper']]
+            - [setEntityManager, ['@doctrine.orm.entity_manager']]
 
     vitalii_tracker_issue.importexport.processor.export:
         parent: oro_importexport.processor.export_abstract
