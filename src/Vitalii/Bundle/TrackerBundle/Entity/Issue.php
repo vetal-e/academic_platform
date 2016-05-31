@@ -58,6 +58,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     private $code;
 
@@ -96,6 +103,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parentIssue")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $childIssues;
 
