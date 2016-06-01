@@ -5,6 +5,7 @@ vitalii:
     tracker:
         issue:
             entity_label: Issue
+            entity_plural_label: Issues
             assignee.label: Assignee
             child_issues.label: "Child issues"
             code.label: Code

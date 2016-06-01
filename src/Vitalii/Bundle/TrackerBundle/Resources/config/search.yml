@@ -1,0 +1,75 @@
+Vitalii\Bundle\TrackerBundle\Entity\Issue:
+    alias: vitalii_tracker_issue
+    title_fields: [code]
+    label: vitalii.tracker.issue.entity_plural_label
+    route:
+        name: "tracker.issue_view"
+        parameters:
+            id: id
+    search_template: VitaliiTrackerBundle:Issue:search.html.twig
+    fields:
+        -
+            name:                   code
+            target_type:            text
+        -
+            name:                   summary
+            target_type:            text
+        -
+            name:                   description
+            target_type:            text
+        -
+            name:                   type
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [name]
+        -
+            name:                   priority
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [name]
+        -
+            name:                   resolution
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [name]
+        -
+            name:                   workflowStep
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: label
+                    target_type: text
+                    target_fields: [label]
+        -
+            name:                   reporter
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [all_data]
+        -
+            name:                   assignee
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [all_data]
+        -
+            name:                   collaborators
+            relation_type: many-to-many
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [all_data]
