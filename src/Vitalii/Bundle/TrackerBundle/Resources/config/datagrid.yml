@@ -25,6 +25,9 @@ datagrid:
                         - { join: i.resolution, alias: resolution_enum }
                         - { join: i.assignee, alias: assignee }
                         - { join: i.reporter, alias: reporter }
+                        - { join: i.collaborators, alias: collaborators }
+                groupBy: i.id, i.code, i.summary, i.createdAt, i.updatedAt, typeName, priorityName, resolutionName, assigneeUsername, reporterUsername
+
         columns:
             code:
                 label: Code
@@ -99,6 +102,13 @@ datagrid:
                         field_options:
                             class: Oro\Bundle\UserBundle\Entity\User
                     data_name: assigneeUsername
+                collaboratorUsernames:
+                    type: choice
+                    label: Collaborator
+                    data_name: collaborators.id
+                    options:
+                        field_options:
+                            choices: "@tracker.issue.manager->getCollaboratorsChoices"
         actions:
             view:
                 type:          navigate
@@ -279,10 +289,13 @@ datagrid:
         extends: issues-grid
         source:
             query:
-                join:
-                    left:
-                        - { join: i.collaborators, alias: u }
                 where:
                     and:
-                        - u.id = @oro_security.security_facade->getLoggedUserId
+                        - collaborators.id = @oro_security.security_facade->getLoggedUserId
         filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10

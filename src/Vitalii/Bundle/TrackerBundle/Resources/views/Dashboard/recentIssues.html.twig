@@ -7,7 +7,17 @@
 
 {% block actions %}
     {% set actions = [{
-        'url': path('tracker.issue_index'),
+        'url': path('tracker.issue_index', {
+            'grid': {
+                'issues-grid': {
+                    'f': {
+                        'collaboratorUsernames': {
+                            'value': app.user.id
+                        }
+                    }
+                } | url_encode
+            },
+        } ),
         'type': 'link',
         'label': 'vitalii.tracker.issue.dashboard.recent_issues.view_all'|trans
     }] %}

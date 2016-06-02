@@ -48,4 +48,23 @@ class IssueManager
 
         $this->doctrine->getManager()->flush();
     }
+
+    public function getCollaboratorsChoices()
+    {
+        $options = [];
+        $em = $this->doctrine->getManager();
+        $collaborators = $em
+            ->createQueryBuilder()
+            ->from('OroUserBundle:User', 'u')
+            ->select('distinct u')
+            ->join('u.issue_collaborators', 'i')
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ($collaborators as $collaborator) {
+            $options[$collaborator['id']] = $collaborator['username'];
+        }
+
+        return $options;
+    }
 }
