@@ -1,0 +1,16 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+    {{ dataGrid.renderGrid('dashboard-recent-issues-grid') }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+        'url': path('tracker.issue_index'),
+        'type': 'link',
+        'label': 'vitalii.tracker.issue.dashboard.recent_issues.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

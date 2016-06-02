@@ -275,3 +275,14 @@ datagrid:
                         - parent.id = :issueId
             bind_parameters:
                 - issueId
+    dashboard-recent-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: i.collaborators, alias: u }
+                where:
+                    and:
+                        - u.id = @oro_security.security_facade->getLoggedUserId
+        filters: ~

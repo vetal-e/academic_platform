@@ -19,4 +19,7 @@ vitalii:
             resolution.label: Resolution
             summary.label: Summary
             type.label: Type
-
+            dashboard:
+                recent_issues:
+                    title: "Recent issues"
+                    view_all: "All issues"
