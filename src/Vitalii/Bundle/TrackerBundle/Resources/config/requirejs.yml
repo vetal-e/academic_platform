@@ -1,0 +1,3 @@
+config:
+    paths:
+        'vitaliitracker/js/app/components/issue-updated-at-component': 'bundles/vitaliitracker/js/app/components/issue-updated-at-component.js'

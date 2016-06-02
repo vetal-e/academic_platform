@@ -21,6 +21,10 @@ definitions:
                 service: "tracker.issue.manager"
                 method: "addCollaboratorsFromNote"
                 method_parameters: [$.data]
+            - @call_service_method:
+                service: "tracker.issue.manager"
+                method: "updateDateOnNote"
+                method_parameters: [$.data]
 triggers:
     issue_collaborators_definition:
         -

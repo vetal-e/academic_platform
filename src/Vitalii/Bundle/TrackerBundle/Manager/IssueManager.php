@@ -39,4 +39,13 @@ class IssueManager
 
         $this->doctrine->getManager()->flush();
     }
+
+    public function updateDateOnNote(Note $note)
+    {
+        /** @var Issue $issue */
+        $issue = $note->getTarget();
+        $issue->setUpdatedAt(new \DateTime('now'));
+
+        $this->doctrine->getManager()->flush();
+    }
 }

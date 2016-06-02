@@ -147,6 +147,18 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/widget/updated_at/{id}", name="tracker.issue_widget_updated_at", requirements={"id"="\d+"})
+     * @Template
+     * @AclAncestor("tracker.issue_view")
+     */
+    public function updatedAtAction(Issue $entity)
+    {
+        return [
+            'updatedAt' => $entity->getUpdatedAt(),
+        ];
+    }
+
+    /**
      * @Route("/delete/{id}", name="tracker.issue_delete", requirements={"id":"\d+"})
      * @Acl(
      *     id="tracker.issue_delete",
