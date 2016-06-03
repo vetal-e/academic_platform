@@ -6,7 +6,7 @@ datagrid:
             type: orm
             query:
                 select:
-                    - i.id
+                    - "distinct i.id"
                     - i.code
                     - i.summary
                     - i.createdAt
@@ -26,7 +26,6 @@ datagrid:
                         - { join: i.assignee, alias: assignee }
                         - { join: i.reporter, alias: reporter }
                         - { join: i.collaborators, alias: collaborators }
-                groupBy: i.id, i.code, i.summary, i.createdAt, i.updatedAt, typeName, priorityName, resolutionName, assigneeUsername, reporterUsername
 
         columns:
             code:
