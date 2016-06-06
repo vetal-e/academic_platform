@@ -1,7 +1,8 @@
 <?php
 
 // Need to trace all kind of errors
-error_reporting(-1);
+//error_reporting(-1);
+error_reporting(32759);
 ini_set('display_errors', 'On');
 
 use Symfony\Component\HttpFoundation\Request;

@@ -1,5 +1,6 @@
 Issues: Issues
 oro.ui.create_entity: "Create entity"
+oro.entityextend.enums.issue_type.entity_label: "Type"
 
 vitalii:
     tracker:
