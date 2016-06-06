@@ -298,3 +298,25 @@ datagrid:
                 pageSize:
                     items: [10]
                     default_per_page: 10
+
+    issues-chart-grid:
+        extended_entity_name: %vitalii_tracker.issue.entity.class%
+        source:
+            acl_resource: "tracker.issue_view"
+            type: orm
+            query:
+                select:
+                    - count(i.id) as total
+                    - ws.label as step
+                from:
+                    - { table: VitaliiTrackerBundle:Issue, alias: i }
+                join:
+                    left:
+                        - { join: i.workflowStep, alias: ws }
+                groupBy: step
+
+        columns:
+            total:
+                label: Total
+            step:
+                label: Step

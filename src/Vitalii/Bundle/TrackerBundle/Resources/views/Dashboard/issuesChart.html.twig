@@ -1,0 +1,16 @@
+{% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
+
+{% set widgetName = 'issue_chart' %}
+
+{% block content %}
+    {{ chartView.render()|raw }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+        'type': 'chart',
+        'label': 'vitalii.tracker.issue.dashboard.issues_chart.title'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

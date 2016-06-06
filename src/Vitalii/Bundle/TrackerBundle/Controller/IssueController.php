@@ -2,6 +2,7 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -172,6 +173,41 @@ class IssueController extends Controller
         $this->delete($issue);
 
         return $this->redirectToRoute('tracker.issue_index');
+    }
+
+    /**
+     * @Route("/dashboard/chart", name="tracker.issue_chart")
+     * @Template("@VitaliiTracker/Dashboard/issuesChart.html.twig")
+     * @AclAncestor("tracker.issue_view")
+     */
+    public function chartAction()
+    {
+        $viewBuilder = $this->container->get('oro_chart.view_builder');
+
+        $datagrid = $this->get('oro_datagrid.datagrid.manager')->getDatagrid(
+            'issues-chart-grid',
+            [PagerInterface::PAGER_ROOT_PARAM => [PagerInterface::DISABLED_PARAM => true]]
+        );
+
+        $chartName = 'issue_line_chart';
+
+        $view = $viewBuilder
+            ->setDataGrid($datagrid)
+            ->setOptions(
+                array_merge_recursive(
+                    [
+                        'name' => 'bar_chart',  // this is actually a chart type, not name
+                    ],
+                    $this
+                        ->get('oro_chart.config_provider')
+                        ->getChartConfig($chartName)
+                )
+            )
+            ->getView();
+
+        return [
+            'chartView' => $view,
+        ];
     }
 
     private function update(Issue $issue, Request $request, $formName = 'tracker_issue', $redirectRoute = [])

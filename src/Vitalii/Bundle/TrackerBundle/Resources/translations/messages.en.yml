@@ -23,3 +23,5 @@ vitalii:
                 recent_issues:
                     title: "Recent issues"
                     view_all: "All issues"
+                issues_chart:
+                    title: "Issues completion"
