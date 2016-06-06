@@ -5,9 +5,20 @@ namespace Vitalii\Bundle\TrackerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vitalii\Bundle\TrackerBundle\Manager\IssueManager;
 
 class IssueType extends AbstractType
 {
+    /**
+     * @var IssueManager $issueManager
+     */
+    private $issueManager;
+
+    public function __construct(IssueManager $issueManager)
+    {
+        $this->issueManager = $issueManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -17,7 +28,10 @@ class IssueType extends AbstractType
             ->add('assignee', null, [
                 'label' => 'Assignee',
             ])
-            ->add('type')
+            ->add('type', 'choice', [
+                    'choices' => $this->issueManager->getTypeChoices(),
+                ]
+            )
             ->add('priority')
         ;
     }

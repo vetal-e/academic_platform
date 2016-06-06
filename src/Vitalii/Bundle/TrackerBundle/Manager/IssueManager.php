@@ -3,6 +3,7 @@
 namespace Vitalii\Bundle\TrackerBundle\Manager;
 
 use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\NoteBundle\Entity\Note;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
@@ -66,5 +67,29 @@ class IssueManager
         }
 
         return $options;
+    }
+
+    public function getTypeChoices()
+    {
+        $className = ExtendHelper::buildEnumValueClassName('issue_type');
+
+        $em = $this->doctrine->getManager();
+        $types = $em
+            ->createQueryBuilder()
+            ->from($className, 't')
+            ->select('t.id', 't.name')
+            ->indexBy('t', 't.id')
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ($types as &$type) {
+            $type = $type['name'];
+        }
+
+        if (isset($types['subtask'])) {
+            unset($types['subtask']);
+        }
+
+        return $types;
     }
 }

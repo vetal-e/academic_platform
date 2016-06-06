@@ -1,6 +1,7 @@
 services:
   tracker.form.type.issue:
     class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueType
+    arguments: ["@tracker.issue.manager"]
     tags:
       - { name: form.type, alias: tracker_issue }
   tracker.form.type.issue_subtask:
