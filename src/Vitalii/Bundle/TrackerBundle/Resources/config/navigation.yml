@@ -1,0 +1,19 @@
+oro_menu_config:
+    items:
+        tracker_tab:
+            label: Tracker
+            uri: '#'
+        tracker_issues:
+            label: Issues
+            route: 'tracker.issue_index'
+        tracker_create_issue:
+            label: Create issue
+            route: 'tracker.issue_create'
+
+    tree:
+        application_menu:
+            children:
+                tracker_tab:
+                    children:
+                        tracker_issues: ~
+                        tracker_create_issue: ~
