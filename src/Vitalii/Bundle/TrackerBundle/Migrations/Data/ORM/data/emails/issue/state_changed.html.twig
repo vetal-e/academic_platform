@@ -1,0 +1,20 @@
+@name = issue_state_changed_email
+@entityName = Oro\Bundle\UserBundle\Entity\User
+@subject = Issue assigned to {{ entity.username }}
+@isSystem = 1
+@isEditable = 1
+
+<h1>Hello {{ entity.username }}</h1>
+<div>
+    {% if issue is not empty%}
+        <p>
+            <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">Issue</a> state was changed to {{ issue.workflowStep }}
+            {% if issue.workflowStep.name == 'resolved' %}
+                ({{ issue.resolution }})
+            {% endif %}
+        </p>
+        <p>code: <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">{{ issue.code }}</a></p>
+        <p>description: {{ issue.description }}</p>
+        <p>reported by: {{ issue.reporter }}</p>
+    {% endif %}
+</div>

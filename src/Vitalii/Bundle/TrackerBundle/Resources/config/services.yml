@@ -8,3 +8,12 @@ services:
     tracker.issue.manager:
         class:      Vitalii\Bundle\TrackerBundle\Manager\IssueManager
         arguments:  ["@doctrine", "@security.token_storage"]
+
+    tracker.mailer.processor:
+        class: Vitalii\Bundle\TrackerBundle\Mailer\Processor
+        arguments:
+            - "@doctrine"
+            - "@oro_config.global"
+            - "@oro_email.email_renderer"
+            - "@oro_email.email_holder_helper"
+            - "@oro_email.direct_mailer"

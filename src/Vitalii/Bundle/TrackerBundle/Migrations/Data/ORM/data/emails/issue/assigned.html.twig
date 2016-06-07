@@ -1,0 +1,15 @@
+@name = issue_assigned_email
+@entityName = Oro\Bundle\UserBundle\Entity\User
+@subject = Issue assigned to {{ entity.username }}
+@isSystem = 1
+@isEditable = 1
+
+<h1>Hello {{ entity.username }}</h1>
+<div>
+    {% if issue is not empty%}
+        <p>There is an <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">issue</a> assigned to you.</p>
+        <p>code: <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">{{ issue.code }}</a></p>
+        <p>description: {{ issue.description }}</p>
+        <p>reported by: {{ issue.reporter }}</p>
+    {% endif %}
+</div>

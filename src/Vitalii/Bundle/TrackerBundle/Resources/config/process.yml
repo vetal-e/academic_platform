@@ -10,6 +10,28 @@ definitions:
                 service: "tracker.issue.manager"
                 method: "addCollaboratorsFromIssue"
                 method_parameters: [$.data]
+    issue_assigned_to:
+        label: 'Issue Assigned To Definition'
+        enabled: true
+        entity: Vitalii\Bundle\TrackerBundle\Entity\Issue
+        order: 40
+        exclude_definitions: [issue_assigned_to]
+        actions_configuration:
+            - @call_service_method:
+                service: "tracker.mailer.processor"
+                method: "sendIssueAssignedEmail"
+                method_parameters: [$.data]
+    issue_state_changed:
+        label: 'Issue State Changed Definition'
+        enabled: true
+        entity: Vitalii\Bundle\TrackerBundle\Entity\Issue
+        order: 50
+        exclude_definitions: [issue_state_changed]
+        actions_configuration:
+            - @call_service_method:
+                service: "tracker.mailer.processor"
+                method: "sendIssueStateChangedEmails"
+                method_parameters: [$.data]
     issue_note_collaborators_definition:
         label: 'Issue Note Collaborators Definition'
         enabled: true
@@ -32,6 +54,16 @@ triggers:
         -
             event: update
             field: assignee
+    issue_assigned_to:
+        -
+            event: create
+        -
+            event: update
+            field: assignee
+    issue_state_changed:
+        -
+            event: update
+            field: workflowStep
     issue_note_collaborators_definition:
         -
             event: create
