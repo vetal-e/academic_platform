@@ -54,17 +54,17 @@ datagrid:
                 type: url
                 route: tracker.issue_update
                 params:
-                    - id
+                    issue_code: code
             view_link:
                 type: url
                 route: tracker.issue_view
                 params:
-                    - id
+                    issue_code: code
             delete_link:
                 type: url
                 route: tracker.issue_delete
                 params:
-                    - id
+                    issue_code: code
         sorters:
             columns:
                 code:

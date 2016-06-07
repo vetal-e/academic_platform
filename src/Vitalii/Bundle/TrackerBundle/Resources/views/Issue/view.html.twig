@@ -5,14 +5,14 @@
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}
         {{ UI.editButton({
-            'path' : path('tracker.issue_update', { id: entity.id }),
+            'path' : path('tracker.issue_update', { issue_code: entity.code }),
             'entity_label': 'Issue'|trans
         }) }}
     {% endif %}
 
     {% if resource_granted('DELETE', entity) %}
         {{ UI.deleteButton({
-            'dataUrl': path('tracker.issue_delete', { id: entity.id}),
+            'dataUrl': path('tracker.issue_delete', { 'issue_code': entity.code}),
             'dataRedirect': path('tracker.issue_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-issue',
@@ -36,7 +36,7 @@
     {% set issueUpdatedAtWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
-            'url': path('tracker.issue_widget_updated_at', {id: entity.id}),
+            'url': path('tracker.issue_widget_updated_at', {'id': entity.id}),
             'alias': 'tracker_issue_updated_at'
         }) }}
     {% endset %}
@@ -63,7 +63,7 @@
     {% set issueInformationWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
-            'url': path('tracker.issue_widget_info', {id: entity.id})
+            'url': path('tracker.issue_widget_info', {'issue_code': entity.code})
         }) }}
     {% endset %}
 

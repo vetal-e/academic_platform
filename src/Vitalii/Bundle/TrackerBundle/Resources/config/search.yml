@@ -5,7 +5,7 @@ Vitalii\Bundle\TrackerBundle\Entity\Issue:
     route:
         name: "tracker.issue_view"
         parameters:
-            id: id
+            issue_code: code
     search_template: VitaliiTrackerBundle:Issue:search.html.twig
     fields:
         -

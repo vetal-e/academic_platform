@@ -7,8 +7,8 @@
 <h1>Hello {{ entity.username }}</h1>
 <div>
     {% if issue is not empty%}
-        <p>There is an <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">issue</a> assigned to you.</p>
-        <p>code: <a href="{{ url('tracker.issue_view', {'id': issue.id}) }}">{{ issue.code }}</a></p>
+        <p>There is an <a href="{{ url('tracker.issue_view', {'issue_code': issue.code}) }}">issue</a> assigned to you.</p>
+        <p>code: <a href="{{ url('tracker.issue_view', {'issue_code': issue.code}) }}">{{ issue.code }}</a></p>
         <p>description: {{ issue.description }}</p>
         <p>reported by: {{ issue.reporter }}</p>
     {% endif %}

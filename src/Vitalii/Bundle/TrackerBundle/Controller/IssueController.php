@@ -2,10 +2,12 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Controller;
 
+use BeSimple\SoapBundle\ServiceDefinition\Annotation\Param;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,7 +23,7 @@ class IssueController extends Controller
      * @Route("/", name="tracker.issue_index")
      * @Template
      * @Acl(
-     *     id="tracker.issue_view",
+     *     id="tracker.issue_view_acl",
      *     type="entity",
      *     class="VitaliiTrackerBundle:Issue",
      *     permission="VIEW"
@@ -54,7 +56,10 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/subtask/{id}", name="tracker.issue_subtask")
+     * @Route("/subtask/{issue_code}", name="tracker.issue_subtask", requirements={"issue_code":".+"})
+     * @ParamConverter("issue", options={
+     *    "mapping": {"issue_code": "code"}
+     * })
      * @Template("VitaliiTrackerBundle:Issue:update_subtask.html.twig")
      * @Acl(
      *     id="tracker.issue_create",
@@ -85,13 +90,16 @@ class IssueController extends Controller
             'tracker_issue_subtask',
             [
                 'route' => 'tracker.issue_view',
-                'parameters' => array('id' => $parent->getId()),
+                'parameters' => array('issue_code' => $parent->getCode()),
             ]
         );
     }
 
     /**
-     * @Route("/update/{id}", name="tracker.issue_update", requirements={"id":"\d+"}, defaults={"id":0})
+     * @Route("/update/{issue_code}", name="tracker.issue_update", requirements={"issue_code":".+"})
+     * @ParamConverter("issue", options={
+     *    "mapping": {"issue_code": "code"}
+     * })
      * @Acl(
      *     id="tracker.issue_update",
      *     type="entity",
@@ -124,7 +132,26 @@ class IssueController extends Controller
     /**
      * @Route("/{id}", name="tracker.issue_view", requirements={"id":"\d+"}, defaults={"id":0})
      * @Template
-     * @AclAncestor("tracker.issue_view")
+     * @AclAncestor("tracker.issue_view_acl")
+     */
+//    public function viewAction(Issue $issue)
+//    {
+//        return [
+//            'entity' => $issue,
+//            'collaboratorsGrid' => 'issue-collaborators-grid',
+//            'subtasksGrid' => 'issue-subtasks-grid',
+//        ];
+//    }
+
+    /**
+     * @Route("/{issue_code}", name="tracker.issue_view", requirements={"issue_code":".+"}, defaults={"issue_code":0})
+     * @ParamConverter("issue", options={
+     *    "mapping": {"issue_code": "code"}
+     * })
+     * @Template
+     * @AclAncestor("tracker.issue_view_acl")
+     * @Param Issue $issue
+     * @return array
      */
     public function viewAction(Issue $issue)
     {
@@ -136,9 +163,12 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/widget/info/{id}", name="tracker.issue_widget_info", requirements={"id"="\d+"})
+     * @Route("/widget/info/{issue_code}", name="tracker.issue_widget_info", requirements={"issue_code"=".+"})
+     * @ParamConverter("issue", options={
+     *    "mapping": {"issue_code": "code"}
+     * })
      * @Template
-     * @AclAncestor("tracker.issue_view")
+     * @AclAncestor("tracker.issue_view_acl")
      */
     public function infoAction(Issue $entity)
     {
@@ -150,17 +180,22 @@ class IssueController extends Controller
     /**
      * @Route("/widget/updated_at/{id}", name="tracker.issue_widget_updated_at", requirements={"id"="\d+"})
      * @Template
-     * @AclAncestor("tracker.issue_view")
+     * @AclAncestor("tracker.issue_view_acl")
+     * @param Issue $issue
+     * @return array
      */
-    public function updatedAtAction(Issue $entity)
+    public function updatedAtAction(Issue $issue)
     {
         return [
-            'updatedAt' => $entity->getUpdatedAt(),
+            'updatedAt' => $issue->getUpdatedAt(),
         ];
     }
 
     /**
-     * @Route("/delete/{id}", name="tracker.issue_delete", requirements={"id":"\d+"})
+     * @Route("/delete/{issue_code}", name="tracker.issue_delete", requirements={"issue_code":".+"})
+     * @ParamConverter("issue", options={
+     *    "mapping": {"issue_code": "code"}
+     * })
      * @Acl(
      *     id="tracker.issue_delete",
      *     type="entity",
@@ -178,7 +213,7 @@ class IssueController extends Controller
     /**
      * @Route("/dashboard/chart", name="tracker.issue_chart")
      * @Template("@VitaliiTracker/Dashboard/issuesChart.html.twig")
-     * @AclAncestor("tracker.issue_view")
+     * @AclAncestor("tracker.issue_view_acl")
      */
     public function chartAction()
     {
@@ -229,7 +264,7 @@ class IssueController extends Controller
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route' => 'tracker.issue_update',
-                    'parameters' => array('id' => $issue->getId()),
+                    'parameters' => array('issue_code' => $issue->getCode()),
                 ],
                 $redirectRoute,
                 $issue

@@ -11,4 +11,4 @@ operations:
             - @redirect:
                 route: "tracker.issue_subtask"
                 route_parameters:
-                    id: $id
+                    issue_code: $code

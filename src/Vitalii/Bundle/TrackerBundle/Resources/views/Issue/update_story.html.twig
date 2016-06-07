@@ -2,7 +2,7 @@
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% if form.vars.value.id %}
-    {% set formAction = path('tracker.issue_update', { 'id': form.vars.value.id }) %}
+    {% set formAction = path('tracker.issue_update', { 'issue_code': form.vars.value.code }) %}
 {% else %}
     {% set formAction = path('tracker.issue_create') %}
 {% endif %}
@@ -10,7 +10,7 @@
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
         {{ UI.deleteButton({
-            'dataUrl': path('tracker.issue_delete', { id: entity.id}),
+            'dataUrl': path('tracker.issue_delete', { 'issue_code': entity.code}),
             'dataRedirect': path('tracker.issue_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-tag',
