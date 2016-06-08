@@ -38,6 +38,17 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
 
     public function up(Schema $schema, QueryBag $queries)
     {
+        $this->createTrackerIssueTable($schema);
+        $this->createTrackerIssueCodesCacheTable($schema);
+    }
+
+    /**
+     * Create tracker_issue table
+     *
+     * @param Schema $schema
+     */
+    protected function createTrackerIssueTable(Schema $schema)
+    {
         $table = $schema->createTable('tracker_issue');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('summary', 'string', ['length' => 255]);
@@ -160,5 +171,20 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
                 ],
             ]
         );
+    }
+
+    /**
+     * Create tracker_issue_codes_cache table
+     *
+     * @param Schema $schema
+     */
+    protected function createTrackerIssueCodesCacheTable(Schema $schema)
+    {
+        $table = $schema->createTable('tracker_issue_codes_cache');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('number', 'integer', []);
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['code'], 'UNIQ_98E926BB77153098');
     }
 }

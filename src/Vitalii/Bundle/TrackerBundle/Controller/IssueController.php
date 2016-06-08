@@ -48,6 +48,7 @@ class IssueController extends Controller
     public function createAction(Request $request)
     {
         $issue = new Issue();
+        $issue->setCode($this->get('tracker.issue.manager')->generateCode());
         $issue->setReporter($this->getUser());
 
         return $this->update($issue, $request);

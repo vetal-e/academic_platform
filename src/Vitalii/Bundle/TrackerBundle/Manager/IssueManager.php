@@ -2,11 +2,13 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Manager;
 
+use Doctrine\ORM\EntityManager;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\NoteBundle\Entity\Note;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
+use Vitalii\Bundle\TrackerBundle\Entity\IssueCodesCache;
 
 class IssueManager
 {
@@ -91,5 +93,55 @@ class IssueManager
         }
 
         return $types;
+    }
+
+    public function generateCode()
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var EntityManager $em */
+        /** @var Issue $latestIssue */
+        $latestIssue = $em
+            ->createQueryBuilder()
+            ->from('VitaliiTrackerBundle:Issue', 'i')
+            ->select('i')
+            ->orderBy('i.createdAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (!empty($latestIssue)) {
+            $latestCode = $latestIssue->getCode();
+
+            $latestCodeText = $latestCode;
+            $latestCodeNumber = 0;
+
+            $latestMatches = [];
+            if (preg_match('/(.+)(?:-)(\d+)$/', $latestCode, $latestMatches)) {
+                $latestCodeText = $latestMatches[1];
+                $latestCodeNumber = $latestMatches[2];
+            }
+
+            /** @var IssueCodesCache $cachedCode */
+            $cachedCode = $this->doctrine->getRepository('VitaliiTrackerBundle:IssueCodesCache')
+                ->findOneByCode($latestCodeText);
+
+            if (!empty($cachedCode)) {
+                $latestCodeNumber = $cachedCode->getNumber();
+            } else {
+                $cachedCode = new IssueCodesCache();
+                $cachedCode->setCode($latestCodeText);
+                $em->persist($cachedCode);
+            }
+
+            $newCodeNumber = $latestCodeNumber + 1;
+
+            $cachedCode->setNumber($newCodeNumber);
+            $em->flush($cachedCode);
+
+            return "$latestCodeText-$newCodeNumber";
+        }
+
+        return null;
     }
 }
