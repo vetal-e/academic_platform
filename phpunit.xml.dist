@@ -5,20 +5,20 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="../../../../app/autoload.php"
-        >
+         bootstrap="app/autoload.php"
+>
     <testsuites>
         <testsuite name="unit">
-            <directory suffix="Test.php">./Tests/Unit</directory>
-            <directory suffix="Test.php">./Tests/Unit</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Component/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory suffix="Test.php">./Tests/Functional</directory>
-            <directory suffix="Test.php">./Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Bundle/*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Component/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
-            <directory suffix="Test.php">./Tests/Selenium</directory>
-            <directory suffix="Test.php">./Tests/Selenium</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Bundle/*Bundle/Tests/Selenium</directory>
+            <directory suffix="Test.php">vendor/oro/platform*/src/*/Component/*/Tests/Selenium</directory>
         </testsuite>
     </testsuites>
     <php>
