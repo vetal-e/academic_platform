@@ -36,6 +36,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
         $typeClassName = ExtendHelper::buildEnumValueClassName('issue_type');
         $typeStory = $manager->getRepository($typeClassName)->findOneById('story');
         $typeTask = $manager->getRepository($typeClassName)->findOneById('task');
+        $typeSubtask = $manager->getRepository($typeClassName)->findOneById('subtask');
 
         $priorityClassName = ExtendHelper::buildEnumValueClassName('issue_priority');
         $priorityNormal = $manager->getRepository($priorityClassName)->findOneById('normal');
@@ -63,6 +64,18 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setPriority($priorityHigh)
         ;
         $em->persist($issue2);
+
+        $issue3 = new Issue();
+        $issue3->setCode('test-03')
+            ->setSummary('Subtask for the story')
+            ->setReporter($user)
+            ->setAssignee($user)
+            ->setCollaborators(new ArrayCollection())
+            ->setType($typeSubtask)
+            ->setPriority($priorityHigh)
+            ->setParentIssue($issue1)
+        ;
+        $em->persist($issue3);
 
         $em->flush();
     }
