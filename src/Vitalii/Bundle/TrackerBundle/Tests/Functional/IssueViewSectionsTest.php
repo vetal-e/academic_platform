@@ -44,4 +44,16 @@ class IssueViewSectionsTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains("subtasks", $crawler->html());
     }
+
+    public function testWorkflow()
+    {
+        /** @var Issue $issue */
+        $issue = $this->doctrine->getRepository('VitaliiTrackerBundle:Issue')->findOneByCode('test-01');
+
+        $crawler = $this->client->request('GET', '/tracker/issue/' . $issue->getId());
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains("Start progress", $crawler->html());
+        $this->assertContains('currentStep: {"name":"open"}', $crawler->html());
+    }
 }
