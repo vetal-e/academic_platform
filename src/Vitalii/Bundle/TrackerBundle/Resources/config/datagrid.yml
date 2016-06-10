@@ -320,3 +320,25 @@ datagrid:
                 label: Total
             step:
                 label: Step
+
+    assigned-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - assignee.id = :assigneeId
+            bind_parameters:
+                - assigneeId
+        filters: ~
+
+    reported-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - reporter.id = :reporterId
+            bind_parameters:
+                - reporterId
+        filters: ~

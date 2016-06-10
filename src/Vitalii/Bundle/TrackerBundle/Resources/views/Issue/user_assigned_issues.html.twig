@@ -1,0 +1,15 @@
+{% if resource_granted('tracker.issue_view') %}
+    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+    <div class="responsive-cell">
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ "Issues assigned to user"|trans }}</span>
+            </div>
+
+            <div class="row-fluid">
+                {{ dataGrid.renderGrid('assigned-issues-grid', {assigneeId: entity.id}) }}
+            </div>
+        </div>
+    </div>
+{% endif %}
