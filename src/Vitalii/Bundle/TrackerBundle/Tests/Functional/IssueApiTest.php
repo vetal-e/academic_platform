@@ -3,48 +3,101 @@
 namespace Vitalii\Bundle\TrackerBundle\Tests\Functional;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Oro\Bundle\ApiBundle\Request\RequestType;
+use Oro\Bundle\ApiBundle\Tests\Functional\ApiTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\UserBundle\Command\GenerateWSSEHeaderCommand;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 
 /**
  * @dbIsolation
  */
-class IssueViewSectionsTest extends WebTestCase
+class IssueViewSectionsTest extends ApiTestCase
 {
     /**
      * @var Registry
      */
     protected $doctrine;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRequestType()
+    {
+        return new RequestType([RequestType::REST, RequestType::JSON_API]);
+    }
+
     protected function setUp()
     {
         $this->initClient(array(), $this->generateBasicAuthHeader(), $force = true);
         $this->doctrine = $this->getContainer()->get('doctrine');
         $this->loadFixtures(['Vitalii\Bundle\TrackerBundle\Tests\Functional\DataFixtures\LoadIssueData']);
+        $this->loadFixtures(['Vitalii\Bundle\TrackerBundle\Tests\Functional\DataFixtures\LoadUserData']);
 
-        $kernel = $this->createKernel();
-        $kernel->boot();
-        $application = new Application($kernel);
-        $application->add(new GenerateWSSEHeaderCommand());
-
-        $command = $application->find('oro:wsse:generate-header');
-        $command->run();
-//        $commandTester = new CommandTester($command);
-//        $commandTester->execute(array('command' => $command->getName()));
+//        parent::setUp();
     }
 
     public function testApi()
     {
-        $command = $this->getApplication()->find('oro:wsse:generate-header');
+        $this->client->request(
+            'GET',
+            '/api/trackerissues',
+            [],
+            [],
+            array_replace(
+                $this->generateWsseAuthHeader(),
+//                $this->generateWSSEHeaders(),
+                ['CONTENT_TYPE' => 'application/vnd.api+json']
+            )
+        );
+        $response = $this->client->getResponse();
 
-        $arguments = array(
-            'command' => 'oro:wsse:generate-header',
-            'apiKey'  => 'a6adad840daf00f68758ad17bfd79c509595cb70',
+        $this->assertApiResponseStatusCodeEquals($response, 200, 'issue', 'get list');
+    }
+
+    private function generateWSSEHeaders()
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_Authorization' => 'WSSE profile="UsernameToken"',
+            'HTTP_X-WSSE' => '',
+        ];
+
+        /** @var User $user */
+        $user = $this->doctrine->getRepository('OroUserBundle:User')->findOneByUsername('admin');
+        $userApi = $this->doctrine->getRepository('OroUserBundle:UserApi')->findOneBy(
+            ['apiKey' => '211dd8446a6d2c6f0517882f1d175f00407f00f3']
+        );
+        $created = date('c');
+        $prefix = gethostname();
+        $nonce  = base64_encode(substr(md5(uniqid($prefix . '_', true)), 0, 16));
+        $salt   = '';
+
+        /** @var MessageDigestPasswordEncoder $encoder */
+        $encoder        = $this->getContainer()->get('escape_wsse_authentication.encoder.wsse_secured');
+        $passwordDigest = $encoder->encodePassword(
+            sprintf(
+                '%s%s%s',
+                base64_decode($nonce),
+                $created,
+                $userApi->getApiKey()
+            ),
+            $salt
         );
 
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        $headers['HTTP_X-WSSE'] = sprintf(
+            'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+            $user->getUsername(),
+            $passwordDigest,
+            $nonce,
+            $created
+        );
+
+        var_dump($headers);
+
+        return $headers;
     }
 }
