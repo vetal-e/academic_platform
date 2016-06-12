@@ -2,6 +2,7 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Form\Type;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +29,8 @@ class IssueType extends AbstractType
             ->add('assignee', null, [
                 'label' => 'Assignee',
             ])
-            ->add('type', 'choice', [
+            ->add('type', 'entity', [
+                    'class' => ExtendHelper::buildEnumValueClassName('issue_type'),
                     'choices' => $this->issueManager->getTypeChoices(),
                 ]
             )

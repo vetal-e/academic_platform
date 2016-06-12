@@ -76,21 +76,15 @@ class IssueManager
         $className = ExtendHelper::buildEnumValueClassName('issue_type');
 
         $em = $this->doctrine->getManager();
+        /** @var EntityManager $em */
         $types = $em
             ->createQueryBuilder()
             ->from($className, 't')
-            ->select('t.id', 't.name')
-            ->indexBy('t', 't.id')
+            ->select('t')
+            ->where('t.id <> :subtaskId')
+            ->setParameter('subtaskId', 'subtask')
             ->getQuery()
-            ->getArrayResult();
-
-        foreach ($types as &$type) {
-            $type = $type['name'];
-        }
-
-        if (isset($types['subtask'])) {
-            unset($types['subtask']);
-        }
+            ->getResult();
 
         return $types;
     }
