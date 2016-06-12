@@ -5,12 +5,8 @@ namespace Vitalii\Bundle\TrackerBundle\Tests\Functional;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\ApiBundle\Tests\Functional\ApiTestCase;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\UserBundle\Command\GenerateWSSEHeaderCommand;
 use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 
 /**
  * @dbIsolation
@@ -48,8 +44,8 @@ class IssueViewSectionsTest extends ApiTestCase
             [],
             [],
             array_replace(
-                $this->generateWsseAuthHeader(),
-//                $this->generateWSSEHeaders(),
+//                $this->generateWsseAuthHeader(),
+                $this->generateWSSEHeaders(),
                 ['CONTENT_TYPE' => 'application/vnd.api+json']
             )
         );
@@ -95,8 +91,6 @@ class IssueViewSectionsTest extends ApiTestCase
             $nonce,
             $created
         );
-
-        var_dump($headers);
 
         return $headers;
     }
