@@ -44,6 +44,26 @@ class IssueGridTest extends AbstractDatagridTestCase
                     'expectedResultCount' => 3,
                 ],
             ],
+            'Dashboard recent issues grid' => [
+                [
+                    'gridParameters' => [
+                        'gridName' => 'dashboard-recent-issues-grid',
+                    ],
+                    'gridFilters' => [],
+                    'assert' => [],
+                    'expectedResultCount' => 3,
+                ],
+            ],
+            'Issues chart grid' => [
+                [
+                    'gridParameters' => [
+                        'gridName' => 'issues-chart-grid',
+                    ],
+                    'gridFilters' => [],
+                    'assert' => [],
+                    'expectedResultCount' => 1,
+                ],
+            ],
         ];
     }
 }
