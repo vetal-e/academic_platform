@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
@@ -31,6 +32,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $em = $this->container->get('doctrine')->getManager();
+        /** @var User $user */
         $user = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
 
         $typeClassName = ExtendHelper::buildEnumValueClassName('issue_type');
@@ -48,6 +50,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setDescription('Some arbitrary description')
             ->setReporter($user)
             ->setAssignee($user)
+            ->setOrganization($user->getOrganization())
             ->setCollaborators(new ArrayCollection())
             ->setType($typeStory)
             ->setPriority($priorityNormal)
@@ -59,6 +62,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setSummary('Second test issue')
             ->setReporter($user)
             ->setAssignee($user)
+            ->setOrganization($user->getOrganization())
             ->setCollaborators(new ArrayCollection())
             ->setType($typeTask)
             ->setPriority($priorityHigh)
@@ -70,6 +74,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setSummary('Subtask for the story')
             ->setReporter($user)
             ->setAssignee($user)
+            ->setOrganization($user->getOrganization())
             ->setCollaborators(new ArrayCollection())
             ->setType($typeSubtask)
             ->setPriority($priorityHigh)
