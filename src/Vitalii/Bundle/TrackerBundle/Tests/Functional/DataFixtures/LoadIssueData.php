@@ -35,6 +35,15 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
         /** @var User $user */
         $user = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
 
+        $user2 = new User();
+        $user2->setUsername('user2');
+        $user2->setEmail('user2@example.com');
+        $user2->setFirstName('Audrey');
+        $user2->setLastName('Vaughan');
+        $user2->setPassword('user2');
+        $user2->setOrganization($user->getOrganization());
+        $em->persist($user2);
+
         $typeClassName = ExtendHelper::buildEnumValueClassName('issue_type');
         $typeStory = $manager->getRepository($typeClassName)->findOneById('story');
         $typeTask = $manager->getRepository($typeClassName)->findOneById('task');
@@ -72,7 +81,7 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
         $issue3 = new Issue();
         $issue3->setCode('test-03')
             ->setSummary('Subtask for the story')
-            ->setReporter($user)
+            ->setReporter($user2)
             ->setAssignee($user)
             ->setOrganization($user->getOrganization())
             ->setCollaborators(new ArrayCollection())

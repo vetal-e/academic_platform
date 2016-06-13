@@ -23,10 +23,10 @@ class IssueCollaboratorsTest extends WebTestCase
         $this->loadFixtures(['Vitalii\Bundle\TrackerBundle\Tests\Functional\DataFixtures\LoadIssueData']);
     }
 
-    public function testIndex()
+    public function testCollaborators()
     {
         /** @var Issue $issue */
-        $issue = $this->doctrine->getRepository('VitaliiTrackerBundle:Issue')->findOneByCode('test-02');
+        $issue = $this->doctrine->getRepository('VitaliiTrackerBundle:Issue')->findOneByCode('test-03');
 
         $crawler = $this->client->request('GET', '/tracker/issue/' . $issue->getId());
         $result = $this->client->getResponse();
@@ -34,7 +34,8 @@ class IssueCollaboratorsTest extends WebTestCase
 
         // Parent element for Collaborators header
         $crawler = $crawler->filterXPath('//h4[text() = "Collaborators"]/..');
-        // TODO: cannot assert because the grid is not rendered
+
         $this->assertContains(self::AUTH_USER, $crawler->html());
+        $this->assertContains('user2@example.com', $crawler->html());
     }
 }
