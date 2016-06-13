@@ -27,7 +27,7 @@ class IssueApiTest extends ApiTestCase
 
     protected function setUp()
     {
-        $this->initClient(array(), $this->generateBasicAuthHeader(), $force = true);
+        $this->initClient(array(), $this->generateBasicAuthHeader());
         $this->doctrine = $this->getContainer()->get('doctrine');
         $this->loadFixtures(['Vitalii\Bundle\TrackerBundle\Tests\Functional\DataFixtures\LoadIssueData']);
 
