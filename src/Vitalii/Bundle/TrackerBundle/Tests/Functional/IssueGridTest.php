@@ -4,6 +4,9 @@ namespace Vitalii\Bundle\TrackerBundle\Tests\Functional;
 
 use Oro\Bundle\DataGridBundle\Tests\Functional\AbstractDatagridTestCase;
 
+/**
+ * @dbIsolation
+ */
 class IssueGridTest extends AbstractDatagridTestCase
 {
     protected function setUp()
