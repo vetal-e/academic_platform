@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\NoteBundle\Entity\Note;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,6 +45,12 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
         $user2->setOrganization($user->getOrganization());
         $em->persist($user2);
 
+        $note = new Note();
+        $note->setOwner($user2);
+        $note->setOrganization($user2->getOrganization());
+        $note->setMessage('Test note');
+        $em->persist($note);
+
         $typeClassName = ExtendHelper::buildEnumValueClassName('issue_type');
         $typeStory = $manager->getRepository($typeClassName)->findOneById('story');
         $typeTask = $manager->getRepository($typeClassName)->findOneById('task');
@@ -77,6 +84,8 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setPriority($priorityHigh)
         ;
         $em->persist($issue2);
+
+        $note->setTarget($issue2);
 
         $issue3 = new Issue();
         $issue3->setCode('test-03')

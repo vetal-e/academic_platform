@@ -38,4 +38,20 @@ class IssueCollaboratorsTest extends WebTestCase
         $this->assertContains(self::AUTH_USER, $crawler->html());
         $this->assertContains('user2@example.com', $crawler->html());
     }
+
+    public function testCollaboratorsFromNotes()
+    {
+        /** @var Issue $issue */
+        $issue = $this->doctrine->getRepository('VitaliiTrackerBundle:Issue')->findOneByCode('test-02');
+
+        $crawler = $this->client->request('GET', '/tracker/issue/' . $issue->getId());
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
+        // Parent element for Collaborators header
+        $crawler = $crawler->filterXPath('//h4[text() = "Collaborators"]/..');
+
+        $this->assertContains(self::AUTH_USER, $crawler->html());
+        $this->assertContains('user2@example.com', $crawler->html());
+    }
 }

@@ -38,7 +38,7 @@ class IssueManager
     {
         $issue = $note->getTarget();
 
-        $issue->addCollaborators($this->token->getUser());
+        $issue->addCollaborators($note->getOwner());
 
         $this->doctrine->getManager()->flush();
     }
