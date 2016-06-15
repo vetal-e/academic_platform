@@ -16,6 +16,11 @@ datagrid:
                     - resolution_enum.name as resolutionName
                     - assignee.username as assigneeUsername
                     - reporter.username as reporterUsername
+                    - type_enum.priority
+                    - priority_enum.priority
+                    - resolution_enum.priority
+                    - ws.label as step
+                    - ws.stepOrder
                 from:
                     - { table: VitaliiTrackerBundle:Issue, alias: i }
                 join:
@@ -26,6 +31,7 @@ datagrid:
                         - { join: i.assignee, alias: assignee }
                         - { join: i.reporter, alias: reporter }
                         - { join: i.collaborators, alias: collaborators }
+                        - { join: i.workflowStep, alias: ws }
 
         columns:
             code:
@@ -48,6 +54,8 @@ datagrid:
             updatedAt:
                   label: Updated at
                   frontend_type: date
+            step:
+                  label: Step
         properties:
             id: ~
             update_link:
@@ -79,6 +87,9 @@ datagrid:
                     data_name: i.createdAt
                 updatedAt:
                     data_name: i.updatedAt
+                step:
+                    data_name: ws.stepOrder
+
             default:
                 updatedAt: DESC
         filters:
