@@ -45,13 +45,25 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
+                    {% if entity.parentIssue %}
+                        {{ UI.renderHtmlProperty('Story'|trans, UI.link({
+                            'label' : entity.parentIssue.code,
+                            'path'  : path('tracker.issue_view', {'id': entity.parentIssue.id})
+                        }) ) }}
+                    {% endif %}
                     {{ UI.renderProperty('Code'|trans, entity.code) }}
                     {{ UI.renderProperty('Summary'|trans, entity.summary) }}
                     {{ UI.renderProperty('Type'|trans, entity.type) }}
                     {{ UI.renderProperty('Priority'|trans, entity.priority) }}
                     {{ UI.renderProperty('Resolution'|trans, entity.resolution) }}
-                    {{ UI.renderProperty('Reported by'|trans, entity.reporter) }}
-                    {{ UI.renderProperty('Assignee'|trans, entity.assignee) }}
+                    {{ UI.renderHtmlProperty('Reported by'|trans, UI.link({
+                        'label' : entity.reporter.username,
+                        'path'  : path('oro_user_view', {'id': entity.reporter.id})
+                    }) ) }}
+                    {{ UI.renderHtmlProperty('Assigned to'|trans, UI.link({
+                        'label' : entity.assignee.username,
+                        'path'  : path('oro_user_view', {'id': entity.assignee.id})
+                    }) ) }}
                     {{ UI.renderProperty('Created at'|trans, entity.createdAt|date) }}
                     {{ UI.renderAttribute('Updated at'|trans, issueUpdatedAtWidget) }}
                     {{ UI.renderProperty('Description'|trans, entity.description) }}
