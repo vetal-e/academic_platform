@@ -302,6 +302,7 @@ datagrid:
                 where:
                     and:
                         - collaborators.id = @oro_security.security_facade->getLoggedUserId
+                        - "ws.name not in ('resolved', 'closed')"
         filters: ~
         options:
             toolbarOptions:
