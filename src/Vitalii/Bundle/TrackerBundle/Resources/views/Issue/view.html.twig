@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% oro_title_set({params : {"%code%": entity.code }}) %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}

@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% oro_title_set({params : {"%code%": entity.code }}) %}
 
 {% if form.vars.value.id %}
     {% set formAction = path('tracker.issue_update', { 'id': form.vars.value.id }) %}

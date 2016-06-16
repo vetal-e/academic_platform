@@ -17,3 +17,10 @@ oro_menu_config:
                     children:
                         tracker_issues: ~
                         tracker_create_issue: ~
+
+oro_titles:
+    'tracker.issue_index': 'All issues'
+    'tracker.issue_create': 'Create issue'
+    'tracker.issue_subtask': 'Add subtask to %%code%%'
+    'tracker.issue_update': '%%code%% - Edit'
+    'tracker.issue_view': '%%code%%'
