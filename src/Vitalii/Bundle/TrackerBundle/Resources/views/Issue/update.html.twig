@@ -80,5 +80,8 @@
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
     } %}
+
+    {{ oro_form_js_validation(form) }}
+
     {{ parent() }}
 {% endblock content_data %}

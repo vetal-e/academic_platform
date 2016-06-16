@@ -1,0 +1,13 @@
+Vitalii\Bundle\TrackerBundle\Entity\Issue:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank:     ~
+            - Length:
+                max:        255
+        summary:
+            - NotBlank:     ~
+            - Length:
+                max:        255
+            - Email:        ~
