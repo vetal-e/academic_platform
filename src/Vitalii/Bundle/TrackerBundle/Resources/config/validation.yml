@@ -10,4 +10,3 @@ Vitalii\Bundle\TrackerBundle\Entity\Issue:
             - NotBlank:     ~
             - Length:
                 max:        255
-            - Email:        ~
