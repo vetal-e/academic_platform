@@ -4,7 +4,9 @@ namespace Vitalii\Bundle\TrackerBundle\Migrations\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,45 +34,60 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $userManager = $this->container->get('oro_user.manager');
 
         $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $businessUnit = $manager
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(['name' => LoadOrganizationAndBusinessUnitData::MAIN_BUSINESS_UNIT]);
 
+        $adminRole = $manager->getRepository('OroUserBundle:Role')
+            ->findOneBy(['role' => LoadRolesData::ROLE_ADMINISTRATOR]);
         $userAdmin = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
         if (empty($userAdmin)) {
             /** @var User $userAdmin */
             $userAdmin = $userManager->createUser();
-            $userAdmin->setUsername('admin');
-            $userAdmin->setEmail('admin@example.com');
-            $userAdmin->setFirstName('John');
-            $userAdmin->setLastName('Doe');
-            $userAdmin->setPlainPassword('admin')
-                ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks1');
-            $userAdmin->setOrganization($organization);
-            $organization->addUser($userAdmin);
-            $userAdmin->addRole(User::ROLE_ADMINISTRATOR);
+            $userAdmin
+                ->setUsername('admin')
+                ->setEmail('admin@example.com')
+                ->setEnabled(true)
+                ->setPlainPassword('admin')
+                ->addRole($adminRole)
+                ->setOrganization($organization)
+                ->addOrganization($organization)
+                ->addBusinessUnit($businessUnit)
+                ->setOwner($businessUnit)
+                ->setFirstName('John')
+                ->setLastName('Doe');
+
             $userManager->updateUser($userAdmin);
         }
 
         /** @var User $userVitaly */
         $userVitaly = $userManager->createUser();
-        $userVitaly->setUsername('vitaly');
-        $userVitaly->setEmail('vitaly@example.com');
-        $userVitaly->setFirstName('Vitaly');
-        $userVitaly->setLastName('Eryomenko');
-        $userVitaly->setPlainPassword('vitaly')
-            ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks2');
-        $userVitaly->setOrganization($organization);
-        $organization->addUser($userVitaly);
+        $userVitaly
+            ->setUsername('vitaly')
+            ->setEmail('vitaly@example.com')
+            ->setEnabled(true)
+            ->setPlainPassword('vitaly')
+            ->setOrganization($organization)
+            ->addOrganization($organization)
+            ->addBusinessUnit($businessUnit)
+            ->setFirstName('Vitaly')
+            ->setLastName('Eryomenko');
+
         $userManager->updateUser($userVitaly);
 
         /** @var User $userSergey */
         $userSergey = $userManager->createUser();
-        $userSergey->setUsername('sergey');
-        $userSergey->setEmail('sergey@example.com');
-        $userSergey->setFirstName('Sergey');
-        $userSergey->setLastName('Zhuravel');
-        $userSergey->setPlainPassword('sergey')
-            ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks3');
-        $userSergey->setOrganization($organization);
-        $organization->addUser($userSergey);
+        $userSergey
+            ->setUsername('sergey')
+            ->setEmail('sergey@example.com')
+            ->setEnabled(true)
+            ->setPlainPassword('sergey')
+            ->setOrganization($organization)
+            ->addOrganization($organization)
+            ->addBusinessUnit($businessUnit)
+            ->setFirstName('Sergey')
+            ->setLastName('Zhuravel');
+
         $userManager->updateUser($userSergey);
 
         $this->setReference($userVitaly->getUsername(), $userVitaly);
