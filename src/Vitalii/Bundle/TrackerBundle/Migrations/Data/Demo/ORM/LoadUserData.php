@@ -29,38 +29,49 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $em = $this->container->get('doctrine')->getManager();
+        $userManager = $this->container->get('oro_user.manager');
+
         $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
 
         $userAdmin = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
         if (empty($userAdmin)) {
-            $userAdmin = new User();
+            /** @var User $userAdmin */
+            $userAdmin = $userManager->createUser();
             $userAdmin->setUsername('admin');
             $userAdmin->setEmail('admin@example.com');
             $userAdmin->setFirstName('John');
             $userAdmin->setLastName('Doe');
-            $userAdmin->setPassword('admin');
+            $userAdmin->setPlainPassword('admin')
+                ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks1');
             $userAdmin->setOrganization($organization);
+            $organization->addUser($userAdmin);
             $userAdmin->addRole(User::ROLE_ADMINISTRATOR);
-            $em->persist($userAdmin);
+            $userManager->updateUser($userAdmin);
         }
 
-        $userVitaly = new User();
+        /** @var User $userVitaly */
+        $userVitaly = $userManager->createUser();
         $userVitaly->setUsername('vitaly');
         $userVitaly->setEmail('vitaly@example.com');
         $userVitaly->setFirstName('Vitaly');
         $userVitaly->setLastName('Eryomenko');
-        $userVitaly->setPassword('vitaly');
+        $userVitaly->setPlainPassword('vitaly')
+            ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks2');
         $userVitaly->setOrganization($organization);
-        $em->persist($userVitaly);
+        $organization->addUser($userVitaly);
+        $userManager->updateUser($userVitaly);
 
-        $userSergey = new User();
+        /** @var User $userSergey */
+        $userSergey = $userManager->createUser();
         $userSergey->setUsername('sergey');
         $userSergey->setEmail('sergey@example.com');
         $userSergey->setFirstName('Sergey');
         $userSergey->setLastName('Zhuravel');
-        $userSergey->setPassword('sergey');
+        $userSergey->setPlainPassword('sergey')
+            ->setSalt('9u438eycmscgcc8wogscwwkk8kc8ks3');
         $userSergey->setOrganization($organization);
-        $em->persist($userSergey);
+        $organization->addUser($userSergey);
+        $userManager->updateUser($userSergey);
 
         $this->setReference($userVitaly->getUsername(), $userVitaly);
         $this->setReference($userSergey->getUsername(), $userSergey);
