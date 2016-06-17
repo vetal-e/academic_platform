@@ -6,6 +6,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vitalii\Bundle\TrackerBundle\Form\EventListener\FieldSetListener;
 use Vitalii\Bundle\TrackerBundle\Manager\IssueManager;
 
 class IssueType extends AbstractType
@@ -15,9 +16,15 @@ class IssueType extends AbstractType
      */
     private $issueManager;
 
-    public function __construct(IssueManager $issueManager)
+    /**
+     * @var FieldSetListener $fieldSetListener
+     */
+    private $fieldSetListener;
+
+    public function __construct(IssueManager $issueManager, FieldSetListener $fieldSetListener)
     {
         $this->issueManager = $issueManager;
+        $this->fieldSetListener = $fieldSetListener;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -36,6 +43,8 @@ class IssueType extends AbstractType
             )
             ->add('priority')
         ;
+
+        $builder->addEventSubscriber($this->fieldSetListener);
     }
 
     public function configureOptions(OptionsResolver $resolver)

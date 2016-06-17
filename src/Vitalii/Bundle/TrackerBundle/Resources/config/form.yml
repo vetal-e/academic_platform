@@ -1,14 +1,15 @@
+parameters:
+    vitalii_tracker.form.type.issue.class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueType
+    vitalii_tracker.form.event_listener.field_set.class: Vitalii\Bundle\TrackerBundle\Form\EventListener\FieldSetListener
+
 services:
-  tracker.form.type.issue:
-    class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueType
-    arguments: ["@tracker.issue.manager"]
-    tags:
-      - { name: form.type, alias: tracker_issue }
-  tracker.form.type.issue_subtask:
-    class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueSubtaskType
-    tags:
-      - { name: form.type, alias: tracker_issue_subtask }
-  tracker.form.type.issue_story:
-    class: Vitalii\Bundle\TrackerBundle\Form\Type\IssueStoryType
-    tags:
-      - { name: form.type, alias: tracker_issue_story }
+    vitalii_tracker.form.type.issue:
+        class: '%vitalii_tracker.form.type.issue.class%'
+        arguments:
+            - '@tracker.issue.manager'
+            - '@vitalii_tracker.form.event_listener.required_attributes'
+        tags:
+            - { name: form.type, alias: tracker_issue }
+
+    vitalii_tracker.form.event_listener.required_attributes:
+        class: '%vitalii_tracker.form.event_listener.field_set.class%'

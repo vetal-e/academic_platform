@@ -1,6 +1,12 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
 {% oro_title_set({params : {"%code%": entity.code }}) %}
+{% set entityLabel = 'Issue'|trans %}
+{% if entity.parentIssue %}
+    {% oro_title_set({params : {"%code%": entity.parentIssue.code }}) %}
+    {% set entityLabel = 'Subtask'|trans %}
+{% endif %}
 
 {% if form.vars.value.id %}
     {% set formAction = path('tracker.issue_update', { 'id': form.vars.value.id }) %}
@@ -16,7 +22,7 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-tag',
             'dataId': form.vars.value.id,
-            'entity_label': 'Issue'|trans
+            'entity_label': entityLabel
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
@@ -38,13 +44,18 @@
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'Issue'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': entityLabel}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
 
 {% block content_data %}
     {% set id = 'issue-edit' %}
+
+    {% set typeField = '' %}
+    {% if form.type is defined %}
+        {% set typeField = form_row(form.type) %}
+    {% endif %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
@@ -55,7 +66,7 @@
                 form_row(form.code),
                 form_row(form.summary),
                 form_row(form.assignee),
-                form_row(form.type),
+                typeField,
                 form_row(form.priority),
                 form_row(form.description),
             ]

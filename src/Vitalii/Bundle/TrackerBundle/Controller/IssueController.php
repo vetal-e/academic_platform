@@ -45,13 +45,13 @@ class IssueController extends Controller
      *     permission="CREATE"
      * )
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
         $issue = new Issue();
         $issue->setCode($this->get('tracker.issue.manager')->generateCode());
         $issue->setReporter($this->getUser());
 
-        return $this->update($issue, $request);
+        return $this->update($issue);
     }
 
     /**
@@ -64,7 +64,7 @@ class IssueController extends Controller
      *     permission="CREATE"
      * )
      */
-    public function addSubtaskAction(Issue $parent, Request $request)
+    public function addSubtaskAction(Issue $parent)
     {
         $this->denyAccessUnlessGranted(
             'subtask',
@@ -80,19 +80,12 @@ class IssueController extends Controller
         $typeSubtask = $this->getDoctrine()->getRepository($typeFieldClassName)->find('subtask');
         $issue->setType($typeSubtask);
 
-        return $this->update(
-            $issue,
-            $request,
-            'tracker_issue_subtask',
-            [
-                'route' => 'tracker.issue_view',
-                'parameters' => array('id' => $parent->getId()),
-            ]
-        );
+        return $this->update($issue);
     }
 
     /**
      * @Route("/update/{id}", name="tracker.issue_update", requirements={"id":"\d+"}, defaults={"id":0})
+     * @Template("VitaliiTrackerBundle:Issue:update.html.twig")
      * @Acl(
      *     id="tracker.issue_update",
      *     type="entity",
@@ -100,26 +93,9 @@ class IssueController extends Controller
      *     permission="EDIT"
      * )
      */
-    public function updateAction(Issue $issue, Request $request)
+    public function updateAction(Issue $issue)
     {
-        $formName = 'tracker_issue';
-        $template = 'VitaliiTrackerBundle:Issue:update.html.twig';
-
-        if (!empty($issue->getParentIssue())) {
-            $formName = 'tracker_issue_subtask';
-            $template = 'VitaliiTrackerBundle:Issue:update_subtask.html.twig';
-        } elseif (!$issue->getChildIssues()->isEmpty()) {
-            $formName = 'tracker_issue_story';
-            $template = 'VitaliiTrackerBundle:Issue:update_story.html.twig';
-        }
-
-        $data = $this->update($issue, $request, $formName);
-
-        if (is_array($data)) {
-            return $this->render($template, $data);
-        } else {
-            return $data;
-        }
+        return $this->update($issue);
     }
 
     /**
@@ -211,9 +187,9 @@ class IssueController extends Controller
         ];
     }
 
-    private function update(Issue $issue, Request $request, $formName = 'tracker_issue', $redirectRoute = [])
+    private function update(Issue $issue)
     {
-        $form = $this->get('form.factory')->create($formName, $issue);
+        $form = $this->get('form.factory')->create('tracker_issue', $issue);
 
         return  $this->get('oro_form.model.update_handler')->handleUpdate(
             $issue,
