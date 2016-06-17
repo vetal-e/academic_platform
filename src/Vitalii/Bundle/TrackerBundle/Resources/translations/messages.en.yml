@@ -20,6 +20,7 @@ vitalii:
             resolution.label: Resolution
             summary.label: Summary
             type.label: Type
+            saved: "Issue saved"
             dashboard:
                 recent_issues:
                     title: "Recent issues"

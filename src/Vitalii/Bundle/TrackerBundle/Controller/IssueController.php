@@ -214,32 +214,23 @@ class IssueController extends Controller
     private function update(Issue $issue, Request $request, $formName = 'tracker_issue', $redirectRoute = [])
     {
         $form = $this->get('form.factory')->create($formName, $issue);
-        $form->handleRequest($request);
 
-        if (empty($redirectRoute)) {
-            $redirectRoute = [
-                'route' => 'tracker.issue_index'
-            ];
-        }
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($issue);
-            $entityManager->flush();
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
+        return  $this->get('oro_form.model.update_handler')->handleUpdate(
+            $issue,
+            $form,
+            function (Issue $issue) {
+                return [
                     'route' => 'tracker.issue_update',
-                    'parameters' => array('id' => $issue->getId()),
-                ],
-                $redirectRoute,
-                $issue
-            );
-        }
-
-        return array(
-            'entity' => $issue,
-            'form' => $form->createView(),
+                    'parameters' => ['id' => $issue->getId()]
+                ];
+            },
+            function (Issue $issue) {
+                return [
+                    'route' => 'tracker.issue_view',
+                    'parameters' => ['id' => $issue->getId()]
+                ];
+            },
+            $this->get('translator')->trans('vitalii.tracker.issue.saved')
         );
     }
 
