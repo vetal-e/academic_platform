@@ -49,6 +49,24 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% block content %}
+    {% if isWidgetContext and savedId is defined and savedId %}
+        <script type="text/javascript">
+            require(['oroui/js/widget-manager', 'oroui/js/messenger', 'oroui/js/mediator'],
+                function(widgetManager, messenger, mediator) {
+                    widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                        messenger.notificationFlashMessage('success', {{ 'vitalii.tracker.issue.saved'|trans|json_encode|raw }});
+                        mediator.trigger('widget_success:' + widget.getAlias());
+                        mediator.trigger('widget_success:' + widget.getWid());
+                        widget.remove();
+                    });
+                });
+        </script>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
 {% block content_data %}
     {% set id = 'issue-edit' %}
 
