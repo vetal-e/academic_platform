@@ -56,7 +56,7 @@ class IssueController extends Controller
 
     /**
      * @Route("/subtask/{id}", name="tracker.issue_subtask")
-     * @Template("VitaliiTrackerBundle:Issue:update_subtask.html.twig")
+     * @Template("VitaliiTrackerBundle:Issue:update.html.twig")
      * @Acl(
      *     id="tracker.issue_create",
      *     type="entity",
@@ -73,6 +73,7 @@ class IssueController extends Controller
         );
 
         $issue = new Issue();
+        $issue->setCode($this->get('tracker.issue.manager')->generateCode());
         $issue->setReporter($this->getUser());
         $issue->setParentIssue($parent);
         $typeFieldClassName = ExtendHelper::buildEnumValueClassName('issue_type');
