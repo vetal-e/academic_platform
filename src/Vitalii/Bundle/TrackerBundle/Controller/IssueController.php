@@ -45,11 +45,15 @@ class IssueController extends Controller
      *     permission="CREATE"
      * )
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
         $issue = new Issue();
         $issue->setCode($this->get('tracker.issue.manager')->generateCode());
         $issue->setReporter($this->getUser());
+        if ($request->get('_action') === 'assign') {
+            $assignee = $this->getDoctrine()->getRepository('OroUserBundle:User')->find($request->get('entityId'));
+            $issue->setAssignee($assignee);
+        }
 
         return $this->update($issue);
     }

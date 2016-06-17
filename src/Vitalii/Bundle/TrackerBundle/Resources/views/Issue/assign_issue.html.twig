@@ -1,0 +1,25 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{{ UI.clientButton({
+    'dataUrl': path('tracker.issue_create', oro_action_params(entity, 'assign')),
+    'aCss': 'no-hash',
+    'dataId': entity.id,
+    'label' : 'Assign issue',
+    'title' : 'Assign issue',
+    'widget' : {
+        'type' : 'dialog',
+        'multiple' : true,
+        'options' : {
+            'alias': 'assign-issue-dialog',
+            'dialogOptions' : {
+                'title' : 'vitalii.tracker.issue.assign.widget_title'|trans({'%username%': entity|oro_format_name}),
+                'allowMaximize': true,
+                'allowMinimize': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'autoResize': true,
+                'width': 550
+            }
+        }
+    }
+}) }}
