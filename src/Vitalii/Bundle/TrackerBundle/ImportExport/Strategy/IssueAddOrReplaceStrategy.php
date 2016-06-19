@@ -48,7 +48,8 @@ class IssueAddOrReplaceStrategy extends ConfigurableAddOrReplaceStrategy
                 and $collaborator instanceof User
                 and $unitOfWork->getEntityState($collaborator) === $unitOfWork::STATE_MANAGED
             ) {
-                // workaround for the bug, to not let the doctrine persist issues through related persisted users (which weren't actually changed)
+                // workaround for the bug, to not let the doctrine persist issues through related persisted users
+                // (which weren't actually changed)
                 $unitOfWork->markReadOnly($collaborator);
             }
         }

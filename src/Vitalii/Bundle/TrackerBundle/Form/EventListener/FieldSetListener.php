@@ -38,5 +38,4 @@ class FieldSetListener implements EventSubscriberInterface
             FormEvents::PRE_SET_DATA => 'onPreSetData'
         ];
     }
-
 }

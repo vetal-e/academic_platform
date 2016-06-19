@@ -39,8 +39,7 @@ class IssueType extends AbstractType
             ->add('type', 'entity', [
                     'class' => ExtendHelper::buildEnumValueClassName('issue_type'),
                     'choices' => $this->issueManager->getTypeChoices(),
-                ]
-            )
+                ])
             ->add('priority')
         ;
 
