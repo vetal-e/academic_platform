@@ -14,6 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * @ORM\Entity
  * @ORM\Table(name="tracker_issue")
  * @Config(
+ *      routeView="tracker.issue_view",
  *      defaultValues={
  *          "ownership"={
  *              "owner_type"="USER",
@@ -30,6 +31,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          },
  *          "tag"={
  *              "enabled"=true
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
