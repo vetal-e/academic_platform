@@ -11,7 +11,11 @@
 {% if form.vars.value.id %}
     {% set formAction = path('tracker.issue_update', { 'id': form.vars.value.id }) %}
 {% else %}
-    {% set formAction = path('tracker.issue_create') %}
+    {% if form.vars.value.parentIssue %}
+        {% set formAction = path('tracker.issue_subtask', { 'id': form.vars.value.parentIssue.id }) %}
+    {% else %}
+        {% set formAction = path('tracker.issue_create') %}
+    {% endif %}
 {% endif %}
 
 {% block navButtons %}

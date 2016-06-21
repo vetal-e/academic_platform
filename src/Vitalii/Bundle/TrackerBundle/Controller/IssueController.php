@@ -206,9 +206,15 @@ class IssueController extends Controller
                 ];
             },
             function (Issue $issue) {
+                $saveAndCloseRouteName = 'tracker.issue_index';
+                $id = $issue->getId();
+                if ($issue->getParentIssue()) {
+                    $saveAndCloseRouteName = 'tracker.issue_view';
+                    $id = $issue->getParentIssue()->getId();
+                }
                 return [
-                    'route' => 'tracker.issue_index',
-                    'parameters' => ['id' => $issue->getId()]
+                    'route' => $saveAndCloseRouteName,
+                    'parameters' => ['id' => $id]
                 ];
             },
             $this->get('translator')->trans('vitalii.tracker.issue.saved')
