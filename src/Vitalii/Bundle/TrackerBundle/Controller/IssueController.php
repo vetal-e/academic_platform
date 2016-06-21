@@ -207,7 +207,7 @@ class IssueController extends Controller
             },
             function (Issue $issue) {
                 return [
-                    'route' => 'tracker.issue_view',
+                    'route' => 'tracker.issue_index',
                     'parameters' => ['id' => $issue->getId()]
                 ];
             },
