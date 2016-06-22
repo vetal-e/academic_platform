@@ -6,6 +6,8 @@ oro_menu_config:
         tracker_issues:
             label: Issues
             route: 'tracker.issue_index'
+            extras:
+                routes: ['tracker.issue_*']
         tracker_create_issue:
             label: Create issue
             route: 'tracker.issue_create'
