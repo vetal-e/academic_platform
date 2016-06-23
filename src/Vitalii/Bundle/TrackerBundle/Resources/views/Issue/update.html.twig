@@ -63,6 +63,8 @@
                         mediator.trigger('widget_success:' + widget.getAlias());
                         mediator.trigger('widget_success:' + widget.getWid());
                         widget.remove();
+                        mediator.trigger('datagrid:doRefresh:assigned-issues-grid');
+                        mediator.trigger('datagrid:doRefresh:reported-issues-grid');
                     });
                 });
         </script>
