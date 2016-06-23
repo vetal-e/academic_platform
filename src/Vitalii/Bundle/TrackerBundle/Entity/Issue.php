@@ -125,6 +125,9 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      */
     private $organization;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct()
     {
         $this->childIssues = new ArrayCollection();

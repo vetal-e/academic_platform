@@ -15,11 +15,17 @@ class IssueVoter
 
     const SUBTASK = 'subtask';
 
+    /**
+     * @return array
+     */
     protected function getSupportedAttributes()
     {
         return array(self::SUBTASK);
     }
 
+    /**
+     * @return array
+     */
     protected function getSupportedClasses()
     {
         return array('Vitalii\Bundle\TrackerBundle\Entity\Issue');

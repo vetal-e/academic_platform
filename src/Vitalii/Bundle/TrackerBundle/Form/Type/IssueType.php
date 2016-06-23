@@ -21,12 +21,19 @@ class IssueType extends AbstractType
      */
     private $fieldSetListener;
 
+    /**
+     * @param IssueManager $issueManager
+     * @param FieldSetListener $fieldSetListener
+     */
     public function __construct(IssueManager $issueManager, FieldSetListener $fieldSetListener)
     {
         $this->issueManager = $issueManager;
         $this->fieldSetListener = $fieldSetListener;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -46,6 +53,9 @@ class IssueType extends AbstractType
         $builder->addEventSubscriber($this->fieldSetListener);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -53,6 +63,9 @@ class IssueType extends AbstractType
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'tracker_issue';

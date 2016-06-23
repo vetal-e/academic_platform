@@ -25,6 +25,9 @@ class IssueApiTest extends ApiTestCase
         return new RequestType([RequestType::REST, RequestType::JSON_API]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->initClient(array(), $this->generateBasicAuthHeader());

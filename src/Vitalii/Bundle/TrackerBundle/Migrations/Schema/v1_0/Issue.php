@@ -14,7 +14,11 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
-class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface, ActivityExtensionAwareInterface
+class Issue implements
+    Migration,
+    ExtendExtensionAwareInterface,
+    NoteExtensionAwareInterface,
+    ActivityExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
@@ -31,6 +35,9 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
      */
     protected $activityExtension;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
@@ -52,6 +59,9 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
         $this->activityExtension = $activityExtension;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->createTrackerIssueTable($schema);
@@ -61,8 +71,6 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
     }
 
     /**
-     * Create tracker_issue table
-     *
      * @param Schema $schema
      */
     protected function createTrackerIssueTable(Schema $schema)
@@ -133,6 +141,11 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
         );
     }
 
+    /**
+     * @param Schema $schema
+     * @param Table $table
+     * @return Table
+     */
     private function addEnumFields(Schema $schema, Table $table)
     {
         $this->extendExtension->addEnumField(
@@ -199,8 +212,6 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
     }
 
     /**
-     * Create tracker_issue_codes_cache table
-     *
      * @param Schema $schema
      */
     protected function createTrackerIssueCodesCacheTable(Schema $schema)
@@ -213,6 +224,10 @@ class Issue implements Migration, ExtendExtensionAwareInterface, NoteExtensionAw
         $table->addUniqueIndex(['code'], 'UNIQ_98E926BB77153098');
     }
 
+    /**
+     * @param Schema $schema
+     * @param ActivityExtension $activityExtension
+     */
     public static function addActivityAssociations(Schema $schema, ActivityExtension $activityExtension)
     {
         $activityExtension->addActivityAssociation($schema, 'oro_email', 'tracker_issue', true);

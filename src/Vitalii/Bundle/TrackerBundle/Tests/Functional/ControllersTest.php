@@ -86,7 +86,7 @@ class ControllersTest extends WebTestCase
         /** @var Issue $issue */
         $issue = $this->doctrine->getRepository('VitaliiTrackerBundle:Issue')->findOneByCode('test-02');
 
-        $crawler = $this->client->request('GET', '/tracker/issue/delete/' . $issue->getId());
+        $this->client->request('GET', '/tracker/issue/delete/' . $issue->getId());
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 302);
     }

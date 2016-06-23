@@ -10,6 +10,10 @@ class Processor extends BaseProcessor
     const ISSUE_ASSIGNED_TEMPLATE_NAME = 'issue_assigned_email';
     const ISSUE_STATE_CHANGED_TEMPLATE_NAME = 'issue_state_changed_email';
 
+    /**
+     * @param Issue $issue
+     * @return int
+     */
     public function sendIssueAssignedEmail(Issue $issue)
     {
         $user = $issue->getAssignee();
@@ -21,6 +25,9 @@ class Processor extends BaseProcessor
         );
     }
 
+    /**
+     * @param Issue $issue
+     */
     public function sendIssueStateChangedEmails(Issue $issue)
     {
         $collaborators = $issue->getCollaborators();

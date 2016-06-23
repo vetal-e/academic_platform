@@ -9,6 +9,9 @@ use Oro\Bundle\DataGridBundle\Tests\Functional\AbstractDatagridTestCase;
  */
 class IssueGridTest extends AbstractDatagridTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -19,7 +22,7 @@ class IssueGridTest extends AbstractDatagridTestCase
     /**
      * @dataProvider gridProvider
      *
-     * @param array $requestData
+     * {@inheritdoc}
      */
     public function testGrid($requestData)
     {

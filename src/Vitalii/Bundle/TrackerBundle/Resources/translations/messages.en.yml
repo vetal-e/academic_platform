@@ -1,26 +1,26 @@
-Issues: Issues
+Issues: "Issues"
 oro.entityextend.enums.issue_type.entity_label: "Type"
 
 vitalii:
     tracker:
         issue:
-            entity_label: Issue
-            entity_plural_label: Issues
-            assignee.label: Assignee
+            entity_label: "Issue"
+            entity_plural_label: "Issues"
+            assignee.label: "Assignee"
             child_issues.label: "Child issues"
-            code.label: Code
-            collaborators.label: Collaborators
-            description.label: Description
-            id.label: Id
-            organization.label: Organization
+            code.label: "Code"
+            collaborators.label: "Collaborators"
+            description.label: "Description"
+            id.label: "Id"
+            organization.label: "Organization"
             parent_issue.label: "Parent issue"
-            priority.label: Priority
-            reporter.label: Reporter
-            resolution.label: Resolution
-            summary.label: Summary
-            type.label: Type
+            priority.label: "Priority"
+            reporter.label: "Reporter"
+            resolution.label: "Resolution"
+            summary.label: "Summary"
+            type.label: "Type"
             saved: "Issue saved"
-            assign.widget_title:  Assign Issue to %username%
+            assign.widget_title:  "Assign Issue to %username%"
             dashboard:
                 recent_issues:
                     title: "Recent issues"

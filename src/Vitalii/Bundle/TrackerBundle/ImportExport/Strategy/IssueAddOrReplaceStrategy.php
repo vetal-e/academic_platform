@@ -2,7 +2,6 @@
 
 namespace Vitalii\Bundle\TrackerBundle\ImportExport\Strategy;
 
-use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Oro\Bundle\UserBundle\Entity\User;

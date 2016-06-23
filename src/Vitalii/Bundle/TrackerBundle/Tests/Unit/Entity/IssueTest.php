@@ -3,9 +3,7 @@
 namespace Vitalii\Bundle\TrackerBundle\Tests\Unit\Entity;
 
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
 class IssueTest extends \PHPUnit_Framework_TestCase

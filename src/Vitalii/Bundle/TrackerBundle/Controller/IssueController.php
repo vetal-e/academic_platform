@@ -192,6 +192,10 @@ class IssueController extends Controller
         ];
     }
 
+    /**
+     * @param Issue $issue
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     private function update(Issue $issue)
     {
         $form = $this->get('form.factory')->create('tracker_issue', $issue);
@@ -221,6 +225,9 @@ class IssueController extends Controller
         );
     }
 
+    /**
+     * @param $issue
+     */
     private function delete($issue)
     {
         $entityManager = $this->getDoctrine()->getManager();

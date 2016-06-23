@@ -11,7 +11,7 @@ class IssueFormTest extends WebTestCase
 {
     protected function setUp()
     {
-        $this->initClient(array(), $this->generateBasicAuthHeader(), $force = true);
+        $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
     public function testForm()

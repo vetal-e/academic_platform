@@ -7,6 +7,9 @@ use Vitalii\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter;
 
 class SubtaskVoterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public function issueProvider()
     {
         return [

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\NoteBundle\Entity\Note;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 use Vitalii\Bundle\TrackerBundle\Entity\IssueCodesCache;
@@ -15,12 +16,19 @@ class IssueManager
     private $doctrine;
     private $token;
 
+    /**
+     * @param Registry $doctrine
+     * @param TokenStorage $tokenStorage
+     */
     public function __construct(Registry $doctrine, TokenStorage $tokenStorage)
     {
         $this->doctrine = $doctrine;
         $this->token = $tokenStorage->getToken();
     }
 
+    /**
+     * @param Issue $issue
+     */
     public function addCollaboratorsFromIssue(Issue $issue)
     {
         $collaborators = [];
@@ -34,6 +42,9 @@ class IssueManager
         $this->doctrine->getManager()->flush();
     }
 
+    /**
+     * @param Note $note
+     */
     public function addCollaboratorsFromNote(Note $note)
     {
         $issue = $note->getTarget();
@@ -43,6 +54,9 @@ class IssueManager
         $this->doctrine->getManager()->flush();
     }
 
+    /**
+     * @param Note $note
+     */
     public function updateDateOnNote(Note $note)
     {
         /** @var Issue $issue */
@@ -52,6 +66,9 @@ class IssueManager
         $this->doctrine->getManager()->flush();
     }
 
+    /**
+     * @return User[]
+     */
     public function getCollaboratorsChoices()
     {
         $options = [];
@@ -71,6 +88,9 @@ class IssueManager
         return $options;
     }
 
+    /**
+     * @return array
+     */
     public function getTypeChoices()
     {
         $className = ExtendHelper::buildEnumValueClassName('issue_type');
@@ -89,6 +109,10 @@ class IssueManager
         return $types;
     }
 
+    /**
+     * @return null|string
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function generateCode()
     {
         $em = $this->doctrine->getManager();
