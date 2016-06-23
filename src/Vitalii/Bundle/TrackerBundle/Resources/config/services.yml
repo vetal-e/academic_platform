@@ -17,3 +17,8 @@ services:
             - "@oro_email.email_renderer"
             - "@oro_email.email_holder_helper"
             - "@oro_email.direct_mailer"
+
+    tracker.subtask_parent.validator:
+        class: Vitalii\Bundle\TrackerBundle\Validator\Constraints\SubtaskParentValidator
+        tags:
+            - { name: validator.constraint_validator, alias: tracker_subtask_parent_validator }

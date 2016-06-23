@@ -1,6 +1,7 @@
 Vitalii\Bundle\TrackerBundle\Entity\Issue:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Vitalii\Bundle\TrackerBundle\Validator\Constraints\SubtaskParent: ~
     properties:
         code:
             - NotBlank:     ~
