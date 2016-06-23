@@ -1,0 +1,1 @@
+'only_subtasks_can_have_parent_issue': 'Issue: {{ issue_code }}, type: {{ issue_type }}, parent: {{ parent_code }}. Only subtasks can have a parent issue'

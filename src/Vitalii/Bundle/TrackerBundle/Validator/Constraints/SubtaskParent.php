@@ -9,7 +9,7 @@ class SubtaskParent extends Constraint
     /**
      * @var string
      */
-    public $message = 'Issue: {{ issue_code }}, type: {{ issue_type }}, parent: {{ parent_code }}. Only subtasks can have a parent issue';
+    public $message = 'only_subtasks_can_have_parent_issue';
 
     /**
      * {@inheritdoc}
