@@ -32,8 +32,12 @@ class IssueManager
     public function addCollaboratorsFromIssue(Issue $issue)
     {
         $collaborators = [];
-        $collaborators[] = $issue->getReporter();
-        $collaborators[] = $issue->getAssignee();
+        if (!empty($issue->getReporter())) {
+            $collaborators[] = $issue->getReporter();
+        }
+        if (!empty($issue->getAssignee())) {
+            $collaborators[] = $issue->getAssignee();
+        }
 
         foreach ($collaborators as $collaborator) {
             $issue->addCollaborators($collaborator);
