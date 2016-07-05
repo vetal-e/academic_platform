@@ -121,16 +121,15 @@ class IssueManager
     }
 
     /**
-     * @return null|string
+     * @return null|Issue
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function generateCode()
+    protected function getLatestIssue()
     {
+        /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
-        /** @var EntityManager $em */
-        /** @var Issue $latestIssue */
-        $latestIssue = $em
+        return $em
             ->createQueryBuilder()
             ->from('VitaliiTrackerBundle:Issue', 'i')
             ->select('i')
@@ -138,6 +137,26 @@ class IssueManager
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $latestCodeText
+     * @return null|IssueCodesCache
+     */
+    protected function getCachedCode($latestCodeText)
+    {
+        return $this->doctrine->getRepository('VitaliiTrackerBundle:IssueCodesCache')
+            ->findOneBy([
+                'code' => $latestCodeText,
+            ]);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function generateCode()
+    {
+        $latestIssue = $this->getLatestIssue();
 
         if (!empty($latestIssue)) {
             $latestCode = $latestIssue->getCode();
@@ -151,9 +170,10 @@ class IssueManager
                 $latestCodeNumber = $latestMatches[2];
             }
 
-            /** @var IssueCodesCache $cachedCode */
-            $cachedCode = $this->doctrine->getRepository('VitaliiTrackerBundle:IssueCodesCache')
-                ->findOneByCode($latestCodeText);
+            $cachedCode = $this->getCachedCode($latestCodeText);
+
+            /** @var EntityManager $em */
+            $em = $this->doctrine->getManager();
 
             if (!empty($cachedCode)) {
                 $latestCodeNumber = $cachedCode->getNumber();
