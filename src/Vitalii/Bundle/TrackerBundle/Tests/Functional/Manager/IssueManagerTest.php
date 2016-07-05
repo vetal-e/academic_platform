@@ -2,6 +2,7 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Tests\Functional\Manager;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Vitalii\Bundle\TrackerBundle\Manager\IssueManager;
 
@@ -36,5 +37,25 @@ class IssueManagerTest extends WebTestCase
             ],
             array_values($collaboratorsChoices)
         );
+    }
+
+    public function testGetTypeChoices()
+    {
+        $typeChoices = $this->issueManager->getTypeChoices();
+        $typeClassName = ExtendHelper::buildEnumValueClassName('issue_type');
+
+        $this->assertEquals(3, count($typeChoices));
+        $this->assertContainsOnlyInstancesOf($typeClassName, $typeChoices);
+    }
+
+    public function testGetTypeChoicesDontHaveSubtask()
+    {
+        $typeChoices = $this->issueManager->getTypeChoices();
+        $typeIds = [];
+        foreach ($typeChoices as $typeChoice) {
+            $typeIds[] = $typeChoice->getId();
+        }
+
+        $this->assertNotContains('subtask', $typeIds);
     }
 }
