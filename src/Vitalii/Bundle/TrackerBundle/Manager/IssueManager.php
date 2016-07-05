@@ -52,6 +52,9 @@ class IssueManager
     public function addCollaboratorsFromNote(Note $note)
     {
         $issue = $note->getTarget();
+        if (null === $issue) {
+            return;
+        }
 
         $issue->addCollaborators($note->getOwner());
 

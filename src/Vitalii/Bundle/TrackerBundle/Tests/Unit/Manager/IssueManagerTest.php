@@ -2,10 +2,45 @@
 
 namespace Vitalii\Bundle\TrackerBundle\Tests\Unit\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\NoteBundle\Entity\Note;
+use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 use Vitalii\Bundle\TrackerBundle\Manager\IssueManager;
 
 class IssueManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var IssueManager $issueManager */
+    protected $issueManager;
+
+    /** @var Issue|\PHPUnit_Framework_MockObject_MockObject $issue */
+    protected $issue;
+
+    protected function setUp()
+    {
+        /** @var Registry|\PHPUnit_Framework_MockObject_MockObject $doctrine */
+        $doctrine = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $em */
+        $em = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $doctrine->method('getManager')->willReturn($em);
+        /** @var TokenStorage|\PHPUnit_Framework_MockObject_MockObject $tokenStorage */
+        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage');
+
+        $this->issueManager = new IssueManager($doctrine, $tokenStorage);
+
+        $this->issue = $this->getMock('Vitalii\Bundle\TrackerBundle\Entity\Issue', [
+            'addCollaborators',
+            'getReporter',
+            'getAssignee'
+        ]);
+    }
+
     /**
      * @return array[]
      */
@@ -28,31 +63,50 @@ class IssueManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddCollaboratorsFromIssue($hasReporter, $hasAssignee, $expected)
     {
-        $doctrine = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\Registry')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $em = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $doctrine->method('getManager')->willReturn($em);
-        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage');
-
-        $issueManager = new IssueManager($doctrine, $tokenStorage);
-
-        $issue = $this->getMock('Vitalii\Bundle\TrackerBundle\Entity\Issue', ['addCollaborators', 'getReporter', 'getAssignee']);
-
         if ($hasReporter) {
+            /** @var User|\PHPUnit_Framework_MockObject_MockObject $reporter */
             $reporter = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-            $issue->method('getReporter')->willReturn($reporter);
+            $this->issue->method('getReporter')->willReturn($reporter);
         }
 
         if ($hasAssignee) {
+            /** @var User|\PHPUnit_Framework_MockObject_MockObject $assignee */
             $assignee = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-            $issue->method('getAssignee')->willReturn($assignee);
+            $this->issue->method('getAssignee')->willReturn($assignee);
         }
 
-        $issue->expects($this->exactly($expected))->method('addCollaborators');
+        $this->issue->expects($this->exactly($expected))->method('addCollaborators');
 
-        $issueManager->addCollaboratorsFromIssue($issue);
+        $this->issueManager->addCollaboratorsFromIssue($this->issue);
+    }
+
+    public function testAddCollaboratorsFromNote()
+    {
+        /** @var Note|\PHPUnit_Framework_MockObject_MockObject $note */
+        $note = $this->getMock('Oro\Bundle\NoteBundle\Entity\Note');
+        /** @var User|\PHPUnit_Framework_MockObject_MockObject $noteAuthor */
+        $noteAuthor = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $note->method('getTarget')->willReturn($this->issue);
+        $note->method('getOwner')->willReturn($noteAuthor);
+
+        $this->issue->expects($this->once())->method('addCollaborators');
+
+        $this->issueManager->addCollaboratorsFromNote($note);
+    }
+
+    public function testAddCollaboratorsFromNoteDoNothingOnEmptyTarget()
+    {
+        /** @var Note|\PHPUnit_Framework_MockObject_MockObject $note */
+        $note = $this->getMock('Oro\Bundle\NoteBundle\Entity\Note');
+        /** @var User|\PHPUnit_Framework_MockObject_MockObject $noteAuthor */
+        $noteAuthor = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+
+        $note->method('getTarget')->willReturn(null);
+        $note->method('getOwner')->willReturn($noteAuthor);
+
+        $this->issue->expects($this->never())->method('addCollaborators');
+
+        $this->issueManager->addCollaboratorsFromNote($note);
     }
 }
