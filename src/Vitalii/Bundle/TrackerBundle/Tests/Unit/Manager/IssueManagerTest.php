@@ -18,6 +18,9 @@ class IssueManagerTest extends \PHPUnit_Framework_TestCase
     /** @var Issue|\PHPUnit_Framework_MockObject_MockObject $issue */
     protected $issue;
 
+    /**
+     * {@inheritDoc}
+     */
     protected function setUp()
     {
         /** @var Registry|\PHPUnit_Framework_MockObject_MockObject $doctrine */
