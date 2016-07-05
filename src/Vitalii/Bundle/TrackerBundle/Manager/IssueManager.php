@@ -68,6 +68,10 @@ class IssueManager
     {
         /** @var Issue $issue */
         $issue = $note->getTarget();
+        if (null === $issue) {
+            return;
+        }
+
         $issue->setUpdatedAt(new \DateTime('now'));
 
         $this->doctrine->getManager()->flush();

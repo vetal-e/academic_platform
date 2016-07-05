@@ -37,7 +37,8 @@ class IssueManagerTest extends \PHPUnit_Framework_TestCase
         $this->issue = $this->getMock('Vitalii\Bundle\TrackerBundle\Entity\Issue', [
             'addCollaborators',
             'getReporter',
-            'getAssignee'
+            'getAssignee',
+            'setUpdatedAt',
         ]);
     }
 
@@ -108,5 +109,29 @@ class IssueManagerTest extends \PHPUnit_Framework_TestCase
         $this->issue->expects($this->never())->method('addCollaborators');
 
         $this->issueManager->addCollaboratorsFromNote($note);
+    }
+
+    public function testUpdateDateOnNote()
+    {
+        /** @var Note|\PHPUnit_Framework_MockObject_MockObject $note */
+        $note = $this->getMock('Oro\Bundle\NoteBundle\Entity\Note');
+
+        $note->method('getTarget')->willReturn($this->issue);
+
+        $this->issue->expects($this->once())->method('setUpdatedAt');
+
+        $this->issueManager->updateDateOnNote($note);
+    }
+
+    public function testUpdateDateOnNoteDoNothingOnEmptyTarget()
+    {
+        /** @var Note|\PHPUnit_Framework_MockObject_MockObject $note */
+        $note = $this->getMock('Oro\Bundle\NoteBundle\Entity\Note');
+
+        $note->method('getTarget')->willReturn(null);
+
+        $this->issue->expects($this->never())->method('setUpdatedAt');
+
+        $this->issueManager->updateDateOnNote($note);
     }
 }
