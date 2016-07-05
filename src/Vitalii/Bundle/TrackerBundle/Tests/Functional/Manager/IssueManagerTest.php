@@ -52,9 +52,9 @@ class IssueManagerTest extends WebTestCase
     {
         $typeChoices = $this->issueManager->getTypeChoices();
         $typeIds = [];
-        foreach ($typeChoices as $typeChoice) {
-            $typeIds[] = $typeChoice->getId();
-        }
+        $typeIds[] = $typeChoices[0]->getId();
+        $typeIds[] = $typeChoices[1]->getId();
+        $typeIds[] = $typeChoices[2]->getId();
 
         $this->assertNotContains('subtask', $typeIds);
     }
