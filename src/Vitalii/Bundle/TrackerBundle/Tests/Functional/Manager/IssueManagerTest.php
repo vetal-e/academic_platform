@@ -58,4 +58,26 @@ class IssueManagerTest extends WebTestCase
 
         $this->assertNotContains('subtask', $typeIds);
     }
+
+    public function testGetLatestIssue()
+    {
+        $issueManagerReflection = new \ReflectionClass('Vitalii\Bundle\TrackerBundle\Manager\IssueManager');
+        $getLatestIssueMethod = $issueManagerReflection->getMethod('getLatestIssue');
+        $getLatestIssueMethod->setAccessible(true);
+
+        $latestIssue = $getLatestIssueMethod->invoke($this->issueManager);
+
+        $this->assertInstanceOf('Vitalii\Bundle\TrackerBundle\Entity\Issue', $latestIssue);
+    }
+
+    public function testGetCachedCode()
+    {
+        $issueManagerReflection = new \ReflectionClass('Vitalii\Bundle\TrackerBundle\Manager\IssueManager');
+        $getCachedCodeMethod = $issueManagerReflection->getMethod('getCachedCode');
+        $getCachedCodeMethod->setAccessible(true);
+
+        $cachedCode = $getCachedCodeMethod->invokeArgs($this->issueManager, ['cachedcode']);
+
+        $this->assertInstanceOf('Vitalii\Bundle\TrackerBundle\Entity\IssueCodesCache', $cachedCode);
+    }
 }

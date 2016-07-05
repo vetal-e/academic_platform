@@ -11,6 +11,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vitalii\Bundle\TrackerBundle\Entity\Issue;
+use Vitalii\Bundle\TrackerBundle\Entity\IssueCodesCache;
 
 class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -99,6 +100,11 @@ class LoadIssueData extends AbstractFixture implements ContainerAwareInterface
             ->setParentIssue($issue1)
         ;
         $em->persist($issue3);
+
+        $cachedCode = new IssueCodesCache();
+        $cachedCode->setCode('cachedcode')
+            ->setNumber(5);
+        $em->persist($cachedCode);
 
         $em->flush();
     }
