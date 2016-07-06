@@ -3,6 +3,9 @@
 namespace Vitalii\Bundle\TrackerBundle\Tests\Unit\Security\Authorization\Voter;
 
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Vitalii\Bundle\TrackerBundle\Entity\Issue;
 use Vitalii\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter;
 
 class IssueVoterTest extends \PHPUnit_Framework_TestCase
@@ -83,5 +86,95 @@ class IssueVoterTest extends \PHPUnit_Framework_TestCase
         $result = $isGrantedMethod->invokeArgs($this->issueVoter, [$attribute, $issue]);
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function testIsClassSupported()
+    {
+        $isClassSupported = $this->issueVoterReflection->getMethod('isClassSupported');
+        $isClassSupported->setAccessible(true);
+
+        $object = new Issue();
+
+        $result = $isClassSupported->invokeArgs($this->issueVoter, [$object]);
+
+        $this->assertEquals(true, $result);
+    }
+
+    public function testIsClassNotSupported()
+    {
+        $isClassSupported = $this->issueVoterReflection->getMethod('isClassSupported');
+        $isClassSupported->setAccessible(true);
+
+        $object = new User();
+
+        $result = $isClassSupported->invokeArgs($this->issueVoter, [$object]);
+
+        $this->assertEquals(false, $result);
+    }
+
+    public function testVote()
+    {
+        /** @var TokenInterface|\PHPUnit_Framework_MockObject_MockObject $token */
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+
+        $issue = $this->getMock('Vitalii\Bundle\TrackerBundle\Entity\Issue', ['getType']);
+        $issueTypeClass = ExtendHelper::buildEnumValueClassName('issue_type');
+        $issueType = $this->getMock($issueTypeClass, ['getId']);
+
+        $issueType->method('getId')->willReturn('story');
+        $issue->method('getType')->willReturn($issueType);
+
+        $attributes = ['subtask'];
+
+        $result = $this->issueVoter->vote($token, $issue, $attributes);
+
+        $this->assertEquals(1, $result);
+    }
+
+    public function testVoteAccessDenied()
+    {
+        /** @var TokenInterface|\PHPUnit_Framework_MockObject_MockObject $token */
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+
+        $issue = $this->getMock('Vitalii\Bundle\TrackerBundle\Entity\Issue', ['getType']);
+        $issueTypeClass = ExtendHelper::buildEnumValueClassName('issue_type');
+        $issueType = $this->getMock($issueTypeClass, ['getId']);
+
+        $issueType->method('getId')->willReturn('task');
+        $issue->method('getType')->willReturn($issueType);
+
+        $attributes = ['subtask'];
+
+        $result = $this->issueVoter->vote($token, $issue, $attributes);
+
+        $this->assertEquals(-1, $result);
+    }
+
+    public function testVoteNotObject()
+    {
+        /** @var TokenInterface|\PHPUnit_Framework_MockObject_MockObject $token */
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+
+        $object = 'text';
+
+        $attributes = ['subtask'];
+
+        $result = $this->issueVoter->vote($token, $object, $attributes);
+
+        $this->assertEquals(0, $result);
+    }
+
+    public function testVoteNotIssue()
+    {
+        /** @var TokenInterface|\PHPUnit_Framework_MockObject_MockObject $token */
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+
+        $object = new User();
+
+        $attributes = ['subtask'];
+
+        $result = $this->issueVoter->vote($token, $object, $attributes);
+
+        $this->assertEquals(0, $result);
     }
 }

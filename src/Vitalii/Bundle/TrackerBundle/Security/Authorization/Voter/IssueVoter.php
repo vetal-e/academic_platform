@@ -28,16 +28,32 @@ class IssueVoter
      */
     protected function getSupportedClasses()
     {
-        return array('Vitalii\Bundle\TrackerBundle\Entity\Issue');
+        return ['Vitalii\Bundle\TrackerBundle\Entity\Issue'];
+    }
+
+    /**
+     * @param object $object
+     * @return bool
+     */
+    protected function isClassSupported($object)
+    {
+        $classIsSupported = false;
+        foreach ($this->getSupportedClasses() as $supportedClassName) {
+            if (is_a($object, $supportedClassName, $allowString = true)) {
+                $classIsSupported = true;
+                break;
+            }
+        }
+
+        return $classIsSupported;
     }
 
     /**
      * @param string $attribute
      * @param Issue $issue
-     * @param User $user
      * @return bool
      */
-    protected function isGranted($attribute, $issue, $user = null)
+    protected function isGranted($attribute, $issue)
     {
         switch ($attribute) {
             case self::SUBTASK:
@@ -62,19 +78,18 @@ class IssueVoter
             return self::ACCESS_ABSTAIN;
         }
 
-        $objectClass = ClassUtils::getClass($object);
-        if (!in_array($objectClass, $this->getSupportedClasses())) {
+        if (!$this->isClassSupported($object)) {
             return self::ACCESS_ABSTAIN;
         }
 
         foreach ($attributes as $attribute) {
-            if (!in_array($attribute, $this->getSupportedAttributes())) {
+            if (!in_array($attribute, $this->getSupportedAttributes(), $strict = true)) {
                 return self::ACCESS_ABSTAIN;
             }
         }
 
         foreach ($attributes as $attribute) {
-            if ($this->isGranted($attribute, $object, $token->getUser())) {
+            if ($this->isGranted($attribute, $object)) {
                 return self::ACCESS_GRANTED;
             }
         }
