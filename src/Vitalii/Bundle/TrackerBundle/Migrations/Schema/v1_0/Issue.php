@@ -11,24 +11,18 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
+//use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+//use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 class Issue implements
     Migration,
     ExtendExtensionAwareInterface,
-    NoteExtensionAwareInterface,
     ActivityExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
      */
     protected $extendExtension;
-
-    /**
-     * @var NoteExtension
-     */
-    protected $noteExtension;
 
     /**
      * @var ActivityExtension
@@ -41,14 +35,6 @@ class Issue implements
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
     }
 
     /**
@@ -122,7 +108,7 @@ class Issue implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
 
-        $this->noteExtension->addNoteAssociation($schema, $table->getName());
+//        $this->noteExtension->addNoteAssociation($schema, $table->getName());
 
         $this->extendExtension->addManyToManyRelation(
             $schema,
@@ -138,6 +124,17 @@ class Issue implements
                     'is_displayable' => false,
                 ],
             ]
+        );
+
+        $this->extendExtension->addManyToManyInverseRelation(
+            $schema,
+            'tracker_issue', // owning side table
+            'collaborators', // owning side field name
+            'oro_user', // target side table
+            'users',
+            ['code'], // column names are used to show a title of related entity
+            ['summary'], // column names are used to show detailed info about related entity
+            ['code'] // Column names are used to show related entity in a grid
         );
     }
 
