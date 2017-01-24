@@ -130,16 +130,16 @@
         }
     ]) %}
 
-    {% if entity.childIssues is not empty %}
-        {% set dataBlocks = dataBlocks|merge([
-            {
-                'title': 'Subtasks'|trans,
-                'subblocks': [
-                    { 'data' : [dataGrid.renderGrid(subtasksGrid, {issueId: entity.id}, renderParams)] }
-                ]
-            }
-        ]) %}
-    {% endif %}
+    {#{% if entity.childIssues is not empty %}#}
+        {#{% set dataBlocks = dataBlocks|merge([#}
+            {#{#}
+                {#'title': 'Subtasks'|trans,#}
+                {#'subblocks': [#}
+                    {#{ 'data' : [dataGrid.renderGrid(subtasksGrid, {issueId: entity.id}, renderParams)] }#}
+                {#]#}
+            {#}#}
+        {#]) %}#}
+    {#{% endif %}#}
 
     {% set dataBlocks = dataBlocks|merge([
         {

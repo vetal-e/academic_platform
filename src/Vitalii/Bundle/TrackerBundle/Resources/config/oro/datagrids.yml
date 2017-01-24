@@ -1,4 +1,4 @@
-datagrid:
+datagrids:
     issues-grid:
         extended_entity_name: %vitalii_tracker.issue.entity.class%
         source:
@@ -199,21 +199,21 @@ datagrid:
 
         properties:
             id: ~
-            update_link:
-                type: url
-                route: oro_user_update
-                params:
-                    - id
-            view_link:
-                type: url
-                route: oro_user_view
-                params:
-                    - id
-            delete_link:
-                type: url
-                route: oro_api_delete_user
-                params:
-                    - id
+#            update_link:
+#                type: url
+#                route: oro_user_update
+#                params:
+#                    - id
+#            view_link:
+#                type: url
+#                route: oro_user_view
+#                params:
+#                    - id
+#            delete_link:
+#                type: url
+#                route: oro_api_delete_user
+#                params:
+#                    - id
         sorters:
             columns:
                 username:

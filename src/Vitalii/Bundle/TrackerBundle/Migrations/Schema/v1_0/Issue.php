@@ -112,29 +112,30 @@ class Issue implements
 
         $this->extendExtension->addManyToManyRelation(
             $schema,
-            'tracker_issue', // owning side table
-            'collaborators', // owning side field name
-            'oro_user', // target side table
-            ['username'], // column names are used to show a title of related entity
-            ['username'], // column names are used to show detailed info about related entity
-            ['username'], // Column names are used to show related entity in a grid
+            'oro_user', // owning side table
+            'issues', // owning side field name
+            'tracker_issue', // target side table
+            ['code'], // column names are used to show a title of related entity
+            ['summary'], // column names are used to show detailed info about related entity
+            ['code'], // Column names are used to show related entity in a grid
             [
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
-                'view' => [
-                    'is_displayable' => false,
-                ],
+//                'view' => [
+//                    'is_displayable' => false,
+//                ],
             ]
         );
 
         $this->extendExtension->addManyToManyInverseRelation(
             $schema,
-            'tracker_issue', // owning side table
-            'collaborators', // owning side field name
-            'oro_user', // target side table
-            'users',
-            ['code'], // column names are used to show a title of related entity
-            ['summary'], // column names are used to show detailed info about related entity
-            ['code'] // Column names are used to show related entity in a grid
+            'oro_user', // owning side table
+            'issues', // owning side field name
+            'tracker_issue', // target side table
+            'collaborators',
+            ['username'], // column names are used to show a title of related entity
+            ['username'], // column names are used to show detailed info about related entity
+            ['username'], // Column names are used to show related entity in a grid
+            ['extend' => ['owner' => ExtendScope::OWNER_CUSTOM]]
         );
     }
 
